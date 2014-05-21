@@ -18,7 +18,7 @@ import com.puresoltechnologies.parsers.parser.Parser;
 import com.puresoltechnologies.parsers.parser.ParserException;
 import com.puresoltechnologies.parsers.parser.ParserTree;
 import com.puresoltechnologies.parsers.parser.lr.SLR1Parser;
-import com.puresoltechnologies.parsers.source.SourceCodeImpl;
+import com.puresoltechnologies.parsers.source.SourceCode;
 import com.puresoltechnologies.parsers.source.UnspecifiedSourceCodeLocation;
 
 /**
@@ -89,7 +89,7 @@ public class GrammarFile implements Closeable {
 			logger.debug("Read grammar file...");
 			logger.debug("Starting lexer...");
 			Lexer lexer = new RegExpLexer(uhuraGrammar);
-			TokenStream tokenStream = lexer.lex(SourceCodeImpl.read(reader,
+			TokenStream tokenStream = lexer.lex(SourceCode.read(reader,
 					new UnspecifiedSourceCodeLocation()));
 			logger.debug("Starting parser...");
 			parse(tokenStream);

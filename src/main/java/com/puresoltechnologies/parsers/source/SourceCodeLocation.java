@@ -7,6 +7,12 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.Properties;
 
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.annotate.JsonTypeInfo.As;
+import org.codehaus.jackson.annotate.JsonTypeInfo.Id;
+
+import com.puresoltechnologies.parsers.lexer.Token;
+
 /**
  * This is a central interface for storing the location of source code in
  * {@link SourceCode}, {@link Token} and other places where the source is needed
@@ -14,6 +20,7 @@ import java.util.Properties;
  * 
  * @author Rick-Rainer Ludwig
  */
+@JsonTypeInfo(use = Id.CLASS, include = As.PROPERTY, property = "class")
 public interface SourceCodeLocation extends Serializable {
 
 	public static final String SOURCE_CODE_LOCATION_CLASS = "source.code.location.class";
@@ -77,7 +84,7 @@ public interface SourceCodeLocation extends Serializable {
 	 *             how. Any issue should be translated into an
 	 *             {@link IOException}.
 	 */
-	public SourceCode loadSourceCode() throws IOException;
+	public SourceCode getSourceCode() throws IOException;
 
 	/**
 	 * This method returns a new {@link SourceCodeLocation} which is pointing to

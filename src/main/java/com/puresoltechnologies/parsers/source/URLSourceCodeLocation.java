@@ -1,13 +1,14 @@
 package com.puresoltechnologies.parsers.source;
 
-import static com.puresoltechnologies.commons.misc.ParameterChecks.checkNotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 public class URLSourceCodeLocation extends AbstractSourceCodeLocation {
 
@@ -17,8 +18,7 @@ public class URLSourceCodeLocation extends AbstractSourceCodeLocation {
 
 	private final URL url;
 
-	public URLSourceCodeLocation(URL url) {
-		checkNotNull("url", url);
+	public URLSourceCodeLocation(@JsonProperty("url") URL url) {
 		this.url = url;
 	}
 
@@ -37,13 +37,15 @@ public class URLSourceCodeLocation extends AbstractSourceCodeLocation {
 	}
 
 	@Override
-	public SourceCode loadSourceCode() throws IOException {
+	@JsonIgnore
+	public SourceCode getSourceCode() throws IOException {
 		try (InputStream stream = url.openStream()) {
-			return SourceCodeImpl.read(stream, this);
+			return SourceCode.read(stream, this);
 		}
 	}
 
 	@Override
+	@JsonIgnore
 	public String getHumanReadableLocationString() {
 		return url.toString();
 	}
@@ -79,17 +81,24 @@ public class URLSourceCodeLocation extends AbstractSourceCodeLocation {
 				"This functionality is not implemented, yet!");
 	}
 
+	public URL getUrl() {
+		return url;
+	}
+
 	@Override
+	@JsonIgnore
 	public String getName() {
 		return new File(url.getPath()).getName();
 	}
 
 	@Override
+	@JsonIgnore
 	public String getInternalLocation() {
 		return new File(url.getPath()).getParent();
 	}
 
 	@Override
+	@JsonIgnore
 	public boolean isAvailable() {
 		try (InputStream stream = url.openStream()) {
 			return stream != null;
@@ -99,6 +108,7 @@ public class URLSourceCodeLocation extends AbstractSourceCodeLocation {
 	}
 
 	@Override
+	@JsonIgnore
 	public Properties getSerialization() {
 		Properties properties = new Properties();
 		properties

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class UnspecifiedSourceCodeLocation extends AbstractSourceCodeLocation {
 
 	private static final long serialVersionUID = 5446070531559019716L;
@@ -17,6 +19,7 @@ public class UnspecifiedSourceCodeLocation extends AbstractSourceCodeLocation {
 	}
 
 	@Override
+	@JsonIgnore
 	public String getHumanReadableLocationString() {
 		return "unspecified source";
 	}
@@ -28,7 +31,8 @@ public class UnspecifiedSourceCodeLocation extends AbstractSourceCodeLocation {
 	}
 
 	@Override
-	public SourceCode loadSourceCode() throws IOException {
+	@JsonIgnore
+	public SourceCode getSourceCode() throws IOException {
 		throw new IOException(
 				"This is an unspecified source. There is not source information available where the source can be loaded from.");
 	}
@@ -50,21 +54,25 @@ public class UnspecifiedSourceCodeLocation extends AbstractSourceCodeLocation {
 	}
 
 	@Override
+	@JsonIgnore
 	public String getName() {
 		return "unspecified source";
 	}
 
 	@Override
+	@JsonIgnore
 	public String getInternalLocation() {
 		return "";
 	}
 
 	@Override
+	@JsonIgnore
 	public boolean isAvailable() {
 		return false;
 	}
 
 	@Override
+	@JsonIgnore
 	public Properties getSerialization() {
 		Properties properties = new Properties();
 		properties

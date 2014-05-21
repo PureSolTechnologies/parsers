@@ -43,7 +43,7 @@ public class PackratParserTest {
 	private ParserTree parseText(Grammar grammar, String text) throws Exception {
 		PackratParser parser = new PackratParser(grammar);
 		FixedCodeLocation codeLocation = new FixedCodeLocation(text);
-		SourceCode sourceCode = codeLocation.loadSourceCode();
+		SourceCode sourceCode = codeLocation.getSourceCode();
 		ParserTree parseTree = parser.parse(sourceCode);
 		assertNotNull(parseTree);
 		checkForCorrectParents(parseTree);
@@ -153,7 +153,7 @@ public class PackratParserTest {
 		final String sampleText = " \t ";
 		IntrospectionUtilities.setField(parser, "text", sampleText);
 		SourceCode sourceCode = new FixedCodeLocation(sampleText)
-				.loadSourceCode();
+				.getSourceCode();
 		StringWithLocation textWithSource = new StringWithLocation(sourceCode);
 		IntrospectionUtilities.setField(parser, "textWithSource",
 				textWithSource);

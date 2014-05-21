@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.puresoltechnologies.commons.misc.FileUtilities;
 import com.puresoltechnologies.commons.misc.PathUtils;
 import com.puresoltechnologies.parsers.source.SourceCode;
-import com.puresoltechnologies.parsers.source.SourceCodeImpl;
+import com.puresoltechnologies.parsers.source.SourceCode;
 import com.puresoltechnologies.parsers.source.SourceCodeLine;
 import com.puresoltechnologies.parsers.source.SourceFileLocation;
 
@@ -19,7 +19,7 @@ public class SourceCodeTest {
 
 	@Test
 	public void testInstance() {
-		assertNotNull(new SourceCodeImpl());
+		assertNotNull(new SourceCode());
 	}
 
 	@Test
@@ -28,7 +28,7 @@ public class SourceCodeTest {
 				.classToRelativePackagePath(SourceCodeTest.class).getPath());
 		SourceFileLocation fileSource = new SourceFileLocation(".",
 				file.getPath());
-		SourceCode sourceCode = fileSource.loadSourceCode();
+		SourceCode sourceCode = fileSource.getSourceCode();
 		assertNotNull(sourceCode);
 		List<SourceCodeLine> lines = sourceCode.getLines();
 		String sourceString = FileUtilities.readFileToString(file);

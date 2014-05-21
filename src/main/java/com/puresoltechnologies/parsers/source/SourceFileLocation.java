@@ -1,12 +1,13 @@
 package com.puresoltechnologies.parsers.source;
 
-import static com.puresoltechnologies.commons.misc.ParameterChecks.checkNotNull;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 public class SourceFileLocation extends AbstractSourceCodeLocation {
 
@@ -16,19 +17,20 @@ public class SourceFileLocation extends AbstractSourceCodeLocation {
 	private static final String SOURCE_CODE_LOCATION_INTERNAL_PATH = "source.code.location.internal.path";
 
 	private final File repositoryDirectory;
-	private final String internalPath;
+	private final String internalLocation;
 	private final File file;
 
-	public SourceFileLocation(String repositoryDirectory, String internalPath) {
-		this(new File(repositoryDirectory), internalPath);
+	public SourceFileLocation(String repositoryDirectory,
+			String internalLocation) {
+		this(new File(repositoryDirectory), internalLocation);
 	}
 
-	public SourceFileLocation(File repositoryDirectory, String internalPath) {
-		checkNotNull("repositoryDirectory", repositoryDirectory);
-		checkNotNull("internalPath", internalPath);
+	public SourceFileLocation(
+			@JsonProperty("repositoryDirectory") File repositoryDirectory,
+			@JsonProperty("internalLocation") String internalLocation) {
 		this.repositoryDirectory = repositoryDirectory;
-		this.internalPath = internalPath;
-		file = new File(repositoryDirectory, internalPath);
+		this.internalLocation = internalLocation;
+		file = new File(repositoryDirectory, internalLocation);
 	}
 
 	public SourceFileLocation(File repositoryDirectory, File internalPath) {
@@ -39,13 +41,13 @@ public class SourceFileLocation extends AbstractSourceCodeLocation {
 		this.repositoryDirectory = new File(
 				properties
 						.getProperty(SOURCE_CODE_LOCATION_REPOSITORY_DIRECTORY));
-		this.internalPath = properties
+		this.internalLocation = properties
 				.getProperty(SOURCE_CODE_LOCATION_INTERNAL_PATH);
-		if (internalPath == null) {
+		if (internalLocation == null) {
 			throw new IllegalStateException("The property "
 					+ SOURCE_CODE_LOCATION_INTERNAL_PATH + " was not set.");
 		}
-		file = new File(repositoryDirectory, this.internalPath);
+		file = new File(repositoryDirectory, this.internalLocation);
 	}
 
 	@Override
@@ -54,23 +56,26 @@ public class SourceFileLocation extends AbstractSourceCodeLocation {
 	}
 
 	@Override
-	public SourceCode loadSourceCode() throws IOException {
+	@JsonIgnore
+	public SourceCode getSourceCode() throws IOException {
 		try (FileInputStream stream = new FileInputStream(file)) {
-			return SourceCodeImpl.read(stream, this);
+			return SourceCode.read(stream, this);
 		}
 	}
 
 	@Override
+	@JsonIgnore
 	public String getHumanReadableLocationString() {
-		return internalPath;
+		return internalLocation;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((internalPath == null) ? 0 : internalPath.hashCode());
+		result = prime
+				* result
+				+ ((internalLocation == null) ? 0 : internalLocation.hashCode());
 		return result;
 	}
 
@@ -83,17 +88,17 @@ public class SourceFileLocation extends AbstractSourceCodeLocation {
 		if (getClass() != obj.getClass())
 			return false;
 		SourceFileLocation other = (SourceFileLocation) obj;
-		if (internalPath == null) {
-			if (other.internalPath != null)
+		if (internalLocation == null) {
+			if (other.internalLocation != null)
 				return false;
-		} else if (!internalPath.equals(other.internalPath))
+		} else if (!internalLocation.equals(other.internalLocation))
 			return false;
 		return true;
 	}
 
 	@Override
 	public SourceCodeLocation newRelativeSource(String relativePath) {
-		File internalFile = new File(internalPath);
+		File internalFile = new File(internalLocation);
 		File internalParentFile = internalFile.getParentFile();
 		File newInternalPath;
 		if (internalParentFile == null) {
@@ -107,21 +112,28 @@ public class SourceFileLocation extends AbstractSourceCodeLocation {
 	}
 
 	@Override
+	@JsonIgnore
 	public String getName() {
 		return file.getName();
 	}
 
-	@Override
-	public String getInternalLocation() {
-		return internalPath;
+	public File getRepositoryDirectory() {
+		return repositoryDirectory;
 	}
 
 	@Override
+	public String getInternalLocation() {
+		return internalLocation;
+	}
+
+	@Override
+	@JsonIgnore
 	public boolean isAvailable() {
 		return file.exists();
 	}
 
 	@Override
+	@JsonIgnore
 	public Properties getSerialization() {
 		Properties properties = new Properties();
 		properties
@@ -130,8 +142,8 @@ public class SourceFileLocation extends AbstractSourceCodeLocation {
 		properties.setProperty(SOURCE_CODE_LOCATION_NAME, getName());
 		properties.setProperty(SOURCE_CODE_LOCATION_REPOSITORY_DIRECTORY,
 				repositoryDirectory.getPath());
-		properties
-				.setProperty(SOURCE_CODE_LOCATION_INTERNAL_PATH, internalPath);
+		properties.setProperty(SOURCE_CODE_LOCATION_INTERNAL_PATH,
+				internalLocation);
 		return properties;
 	}
 }

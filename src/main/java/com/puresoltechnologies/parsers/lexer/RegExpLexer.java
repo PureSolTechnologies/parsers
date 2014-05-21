@@ -10,7 +10,7 @@ import com.puresoltechnologies.parsers.grammar.Grammar;
 import com.puresoltechnologies.parsers.grammar.token.TokenDefinition;
 import com.puresoltechnologies.parsers.grammar.token.Visibility;
 import com.puresoltechnologies.parsers.source.SourceCode;
-import com.puresoltechnologies.parsers.source.SourceCodeImpl;
+import com.puresoltechnologies.parsers.source.SourceCode;
 import com.puresoltechnologies.parsers.source.SourceCodeLine;
 import com.puresoltechnologies.parsers.source.StringWithLocation;
 
@@ -126,7 +126,7 @@ public class RegExpLexer implements Lexer {
 			cloned.tokenStream = null;
 		}
 		if (this.sourceCode != null) {
-			SourceCodeImpl clonedSourceCode = new SourceCodeImpl();
+			SourceCode clonedSourceCode = new SourceCode();
 			clonedSourceCode.addSourceCode(sourceCode);
 			cloned.sourceCode = clonedSourceCode;
 		} else {

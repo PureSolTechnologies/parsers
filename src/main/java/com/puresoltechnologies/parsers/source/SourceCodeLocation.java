@@ -24,7 +24,6 @@ import com.puresoltechnologies.parsers.lexer.Token;
 public interface SourceCodeLocation extends Serializable {
 
 	public static final String SOURCE_CODE_LOCATION_CLASS = "source.code.location.class";
-	public static final String SOURCE_CODE_LOCATION_TYPE = "source.code.location.type";
 	public static final String SOURCE_CODE_LOCATION_NAME = "source.code.location.name";
 
 	/**

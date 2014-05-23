@@ -20,7 +20,6 @@ import com.puresoltechnologies.commons.misc.FileSearchConfiguration;
 public interface RepositoryLocation extends Serializable {
 
 	public static final String REPOSITORY_LOCATION_CLASS = "repository.class";
-	public static final String REPOSITORY_LOCATION_TYPE = "repository.type";
 	public static final String REPOSITORY_LOCATION_NAME = "repository.name";
 
 	/**

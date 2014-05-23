@@ -138,7 +138,6 @@ public class SourceFileLocation extends AbstractSourceCodeLocation {
 		Properties properties = new Properties();
 		properties
 				.setProperty(SOURCE_CODE_LOCATION_CLASS, getClass().getName());
-		properties.setProperty(SOURCE_CODE_LOCATION_TYPE, "unspecified");
 		properties.setProperty(SOURCE_CODE_LOCATION_NAME, getName());
 		properties.setProperty(SOURCE_CODE_LOCATION_REPOSITORY_DIRECTORY,
 				repositoryDirectory.getPath());

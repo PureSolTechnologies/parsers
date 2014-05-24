@@ -41,7 +41,7 @@ public interface SourceCodeLocation extends Serializable {
 	 * folder. It also be a path within a SCM code repository or something
 	 * similar.
 	 * 
-	 * @return Returns a logicatl
+	 * @return Returns a logical position within the respository.
 	 */
 	public String getInternalLocation();
 

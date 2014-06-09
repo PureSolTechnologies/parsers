@@ -10,7 +10,6 @@ import com.puresoltechnologies.parsers.grammar.Grammar;
 import com.puresoltechnologies.parsers.grammar.token.TokenDefinition;
 import com.puresoltechnologies.parsers.grammar.token.Visibility;
 import com.puresoltechnologies.parsers.source.SourceCode;
-import com.puresoltechnologies.parsers.source.SourceCode;
 import com.puresoltechnologies.parsers.source.SourceCodeLine;
 import com.puresoltechnologies.parsers.source.StringWithLocation;
 

@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import com.puresoltechnologies.commons.trees.TreeException;
 import com.puresoltechnologies.parsers.parser.ParserTree;
 
 /**
@@ -30,48 +29,52 @@ import com.puresoltechnologies.parsers.parser.ParserTree;
  */
 public class GrammarReader implements Closeable {
 
-	private final ParserTree ast;
-	private final GrammarConverter converter;
-	private final GrammarFile grammarFile;
+    private final ParserTree ast;
+    private final GrammarConverter converter;
+    private final GrammarFile grammarFile;
 
-	/**
-	 * Constructor for InputStream reading.
-	 * 
-	 * @param inputStream
-	 * @throws IOException
-	 * @throws GrammarException
-	 * @throws TreeException
-	 */
-	public GrammarReader(InputStream inputStream) throws GrammarException,
-			IOException {
-		this(new InputStreamReader(inputStream));
-	}
+    /**
+     * Constructor for InputStream reading.
+     * 
+     * @param inputStream
+     *            is an {@link InputStream} to be read in.
+     * @throws IOException
+     *             is thrown in case of IO issues.
+     * @throws GrammarException
+     *             is thrown in case of grammar issues.
+     */
+    public GrammarReader(InputStream inputStream) throws GrammarException,
+	    IOException {
+	this(new InputStreamReader(inputStream));
+    }
 
-	/**
-	 * Constructor taking a reader for reading the grammar.
-	 * 
-	 * @param reader
-	 * @throws GrammarException
-	 * @throws TreeException
-	 * @throws IOException
-	 */
-	public GrammarReader(Reader reader) throws GrammarException, IOException {
-		grammarFile = new GrammarFile(reader);
-		ast = grammarFile.getAST();
-		converter = new GrammarConverter(ast);
-	}
+    /**
+     * Constructor taking a reader for reading the grammar.
+     * 
+     * @param reader
+     *            is a {@link Reader} to read the grammar from.
+     * @throws GrammarException
+     *             is thrown in cases of grammar issues.
+     * @throws IOException
+     *             is thrown in cases of IO issues.
+     */
+    public GrammarReader(Reader reader) throws GrammarException, IOException {
+	grammarFile = new GrammarFile(reader);
+	ast = grammarFile.getParserTree();
+	converter = new GrammarConverter(ast);
+    }
 
-	public ParserTree getAST() {
-		return ast;
-	}
+    public ParserTree getAST() {
+	return ast;
+    }
 
-	public Grammar getGrammar() {
-		return converter.getGrammar();
-	}
+    public Grammar getGrammar() {
+	return converter.getGrammar();
+    }
 
-	@Override
-	public void close() throws IOException {
-		grammarFile.close();
-	}
+    @Override
+    public void close() throws IOException {
+	grammarFile.close();
+    }
 
 }

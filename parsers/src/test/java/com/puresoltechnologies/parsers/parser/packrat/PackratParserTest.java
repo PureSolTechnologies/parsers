@@ -115,7 +115,7 @@ public class PackratParserTest {
 		try {
 			GrammarFile file = new GrammarFile(inStream);
 			try {
-				Grammar grammar = new GrammarConverter(file.getAST())
+				Grammar grammar = new GrammarConverter(file.getParserTree())
 						.getGrammar();
 				assertNotNull(grammar);
 				return grammar;

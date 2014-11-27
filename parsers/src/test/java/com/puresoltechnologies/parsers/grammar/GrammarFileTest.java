@@ -26,7 +26,7 @@ public class GrammarFileTest {
 		assertNotNull(inputStream);
 		GrammarFile file = new GrammarFile(inputStream);
 		try {
-			ParserTree ast = file.getAST();
+			ParserTree ast = file.getParserTree();
 			assertNotNull(ast);
 		} finally {
 			file.close();

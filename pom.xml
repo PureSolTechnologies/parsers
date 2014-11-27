@@ -96,6 +96,20 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-core-asl</artifactId>
+				<version>1.9.13</version>
+				<!-- This dependency needs to be provided by the container or application -->
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-jaxrs</artifactId>
+				<version>1.9.13</version>
+				<!-- This dependency needs to be provided by the container or application -->
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.osgi</groupId>
 				<artifactId>org.osgi.core</artifactId>
 				<version>5.0.0</version>

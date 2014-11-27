@@ -24,6 +24,7 @@ public interface Parser extends Serializable, Cloneable {
      *            is the token stream to be parsed.
      * @return A result AST is returned.
      * @throws ParserException
+     *             os thrown in case of a parser issue.
      */
     public ParserTree parse(TokenStream tokenStream) throws ParserException;
 

@@ -18,7 +18,8 @@ public class TokenStream extends ArrayList<Token> {
      *            is the token id which is to be highlighted. The code around it
      *            is printed, too, to give the user a glue where to find the
      *            position in the source.
-     * @return
+     * @return A {@link String} is returned containing a code sample from the
+     *         stream.
      */
     public String getCodeSample(int position) {
 	StringBuffer buffer = new StringBuffer();

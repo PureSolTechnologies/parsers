@@ -32,7 +32,7 @@ public class PackratParserExtTest {
 		try {
 			GrammarFile grammarFile = new GrammarFile(inputStream);
 			try {
-				Grammar grammar = new GrammarConverter(grammarFile.getAST())
+				Grammar grammar = new GrammarConverter(grammarFile.getParserTree())
 						.getGrammar();
 				assertNotNull(grammar);
 				PackratParser parser = new PackratParser(grammar);

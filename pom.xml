@@ -15,7 +15,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.puresoltechnologies.commons</groupId>
-			<artifactId>misc</artifactId>
+			<artifactId>os</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.puresoltechnologies.commons</groupId>

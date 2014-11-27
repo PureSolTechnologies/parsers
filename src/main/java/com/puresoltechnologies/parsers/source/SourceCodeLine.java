@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.puresoltechnologies.commons.misc.ObjectUtilities;
+import com.puresoltechnologies.commons.types.ObjectUtilities;
 
 /**
  * This class represents a single line of source code taken from a source code

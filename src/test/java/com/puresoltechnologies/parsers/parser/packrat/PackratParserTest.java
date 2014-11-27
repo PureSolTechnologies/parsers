@@ -12,11 +12,11 @@ import java.util.regex.Pattern;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.puresoltechnologies.commons.misc.IntrospectionUtilities;
 import com.puresoltechnologies.commons.trees.TreePrinter;
 import com.puresoltechnologies.commons.trees.TreeVisitor;
 import com.puresoltechnologies.commons.trees.TreeWalker;
 import com.puresoltechnologies.commons.trees.WalkingAction;
+import com.puresoltechnologies.commons.types.IntrospectionUtilities;
 import com.puresoltechnologies.parsers.grammar.Grammar;
 import com.puresoltechnologies.parsers.grammar.GrammarConverter;
 import com.puresoltechnologies.parsers.grammar.GrammarFile;

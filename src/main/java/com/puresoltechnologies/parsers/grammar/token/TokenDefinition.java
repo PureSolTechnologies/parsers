@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import com.puresoltechnologies.commons.misc.ObjectUtilities;
+import com.puresoltechnologies.commons.types.ObjectUtilities;
 import com.puresoltechnologies.parsers.grammar.GrammarException;
 
 /**

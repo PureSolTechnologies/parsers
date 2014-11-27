@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.puresoltechnologies.commons.misc.StringUtils;
+import com.puresoltechnologies.commons.types.StringUtils;
 import com.puresoltechnologies.parsers.grammar.Grammar;
 import com.puresoltechnologies.parsers.grammar.token.TokenDefinition;
 import com.puresoltechnologies.parsers.grammar.token.Visibility;

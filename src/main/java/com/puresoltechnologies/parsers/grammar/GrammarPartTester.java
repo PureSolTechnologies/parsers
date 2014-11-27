@@ -7,7 +7,7 @@ import java.io.PrintStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.puresoltechnologies.commons.misc.StopWatch;
+import com.puresoltechnologies.commons.os.StopWatch;
 import com.puresoltechnologies.commons.trees.TreePrinter;
 import com.puresoltechnologies.parsers.lexer.Lexer;
 import com.puresoltechnologies.parsers.lexer.LexerException;

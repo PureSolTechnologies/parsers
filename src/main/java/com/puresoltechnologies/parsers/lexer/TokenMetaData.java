@@ -2,7 +2,7 @@ package com.puresoltechnologies.parsers.lexer;
 
 import java.io.Serializable;
 
-import com.puresoltechnologies.commons.misc.ObjectUtilities;
+import com.puresoltechnologies.commons.types.ObjectUtilities;
 import com.puresoltechnologies.parsers.source.SourceCodeLocation;
 
 /**

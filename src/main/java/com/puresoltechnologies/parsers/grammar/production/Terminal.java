@@ -1,6 +1,6 @@
 package com.puresoltechnologies.parsers.grammar.production;
 
-import com.puresoltechnologies.commons.misc.ObjectUtilities;
+import com.puresoltechnologies.commons.types.ObjectUtilities;
 import com.puresoltechnologies.parsers.lexer.Token;
 
 /**

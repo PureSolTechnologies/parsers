@@ -2,7 +2,7 @@ package com.puresoltechnologies.parsers.parser.parsetable;
 
 import java.io.Serializable;
 
-import com.puresoltechnologies.commons.misc.ObjectUtilities;
+import com.puresoltechnologies.commons.types.ObjectUtilities;
 
 /**
  * This is a single state table entry for a stored action. The action consists

@@ -36,10 +36,11 @@ public class GrammarConverter {
     private Grammar grammar = null;
     private final Map<String, Visibility> tokenVisibility = new HashMap<String, Visibility>();
     private int autogenId;
-    private boolean normalizeToBNF; /*
-				     * TODO the usage of this value is to be
-				     * inserted!
-				     */
+
+    // private boolean normalizeToBNF;
+    /*
+     * TODO the usage of this value is to be inserted!
+     */
 
     /**
      * Constructor for file reading.
@@ -110,8 +111,8 @@ public class GrammarConverter {
 	    }
 	    options.put(name, value);
 	}
-	normalizeToBNF = Boolean.valueOf(options.getProperty(
-		"grammar.normalize_to_bnf", "true"));
+	// normalizeToBNF = Boolean.valueOf(options.getProperty(
+	// "grammar.normalize_to_bnf", "true"));
     }
 
     /**

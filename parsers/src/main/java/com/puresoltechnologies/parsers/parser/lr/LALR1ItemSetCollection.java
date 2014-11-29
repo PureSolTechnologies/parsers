@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -118,19 +119,19 @@ public class LALR1ItemSetCollection implements Serializable {
 
     private boolean addNewItems(Map<Integer, List<LR1Item>> newItems) {
 	boolean changed = false;
-	for (Integer stateId : newItems.keySet()) {
+	for (Entry<Integer, List<LR1Item>> entry : newItems.entrySet()) {
+	    Integer key = entry.getKey();
 	    Runtime runtime = Runtime.getRuntime();
 	    long free = runtime.freeMemory() / 1024 / 1024;
 	    long total = runtime.totalMemory() / 1024 / 1024;
 	    long max = runtime.maxMemory() / 1024 / 1024;
 	    if (logger.isTraceEnabled()) {
-		logger.trace("state: " + stateId + " / "
-			+ itemSetCollection.size() + " (free mem: " + free
-			+ "MB; total mem: " + total + "MB; max mem: " + max
-			+ "MB)");
+		logger.trace("state: " + key + " / " + itemSetCollection.size()
+			+ " (free mem: " + free + "MB; total mem: " + total
+			+ "MB; max mem: " + max + "MB)");
 	    }
-	    for (LR1Item newItem : newItems.get(stateId)) {
-		if (addNewLookahead(stateId, newItem)) {
+	    for (LR1Item newItem : entry.getValue()) {
+		if (addNewLookahead(key, newItem)) {
 		    changed = true;
 		}
 	    }

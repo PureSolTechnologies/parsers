@@ -262,7 +262,7 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
 	}
     }
 
-    private class TextWalkerClient implements TreeVisitor<ParserTree> {
+    private static class TextWalkerClient implements TreeVisitor<ParserTree> {
 
 	private final StringBuffer text = new StringBuffer();
 

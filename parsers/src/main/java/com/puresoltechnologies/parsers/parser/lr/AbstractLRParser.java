@@ -126,8 +126,8 @@ public abstract class AbstractLRParser extends AbstractParser {
 		"parser.backtracking"));
 	int backtrackDepth = 0;
 	try {
-	    backtrackDepth = Integer.valueOf((String) grammar.getOptions().get(
-		    "parser.backtracking.depth"));
+	    backtrackDepth = Integer.parseInt((String) grammar.getOptions()
+		    .get("parser.backtracking.depth"));
 	} catch (NumberFormatException e) {
 	}
 	this.backtrackDepth = backtrackDepth;

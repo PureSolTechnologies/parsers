@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -179,7 +180,8 @@ public abstract class AbstractParserTable implements ParserTable {
      */
     private void addExactActions(Construction construction,
 	    ParserActionSet set, Map<Construction, ParserActionSet> actions) {
-	for (Construction c : actions.keySet()) {
+	for (Entry<Construction, ParserActionSet> entry : actions.entrySet()) {
+	    Construction c = entry.getKey();
 	    if (!c.getName().equals(construction.getName())) {
 		// if name is not equal, it does obviously not fit...
 		continue;
@@ -193,7 +195,7 @@ public abstract class AbstractParserTable implements ParserTable {
 		 * if both are non-terminals, the names are the only criterion
 		 * for an exact match
 		 */
-		set.addActions(actions.get(c));
+		set.addActions(entry.getValue());
 		continue;
 	    }
 	    Terminal terminal = (Terminal) construction;
@@ -203,11 +205,11 @@ public abstract class AbstractParserTable implements ParserTable {
 	    Terminal t = (Terminal) c;
 	    if (grammar.isIgnoreCase()) {
 		if (terminal.getText().equalsIgnoreCase(t.getText())) {
-		    set.addActions(actions.get(c));
+		    set.addActions(entry.getValue());
 		}
 	    } else {
 		if (terminal.getText().equals(t.getText())) {
-		    set.addActions(actions.get(c));
+		    set.addActions(entry.getValue());
 		}
 	    }
 	}

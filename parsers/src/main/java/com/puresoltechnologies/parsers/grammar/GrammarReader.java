@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.Charset;
 
 import com.puresoltechnologies.parsers.parser.ParserTree;
 
@@ -45,7 +46,7 @@ public class GrammarReader implements Closeable {
      */
     public GrammarReader(InputStream inputStream) throws GrammarException,
 	    IOException {
-	this(new InputStreamReader(inputStream));
+	this(new InputStreamReader(inputStream, Charset.defaultCharset()));
     }
 
     /**

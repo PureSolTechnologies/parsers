@@ -8,21 +8,13 @@
 		<version>0.3.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>parsers</artifactId>
+	<artifactId>test</artifactId>
 	<name>Purifinity Parsers: ${project.artifactId}</name>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.puresoltechnologies.commons</groupId>
-			<artifactId>os</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.puresoltechnologies.commons</groupId>
-			<artifactId>trees</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-core-asl</artifactId>
+			<groupId>com.puresoltechnologies.parsers</groupId>
+			<artifactId>parsers</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
@@ -31,6 +23,10 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 		</dependency>
 	</dependencies>
 

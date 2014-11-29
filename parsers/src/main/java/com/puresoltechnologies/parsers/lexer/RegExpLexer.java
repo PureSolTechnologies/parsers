@@ -111,7 +111,7 @@ public class RegExpLexer implements Lexer {
     }
 
     @Override
-    public Lexer clone() {
+    public RegExpLexer clone() {
 	RegExpLexer cloned = new RegExpLexer(grammar);
 	if (this.tokenStream != null) {
 	    cloned.tokenStream = (TokenStream) this.tokenStream.clone();

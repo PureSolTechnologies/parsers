@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.Charset;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +49,7 @@ public class GrammarFile implements Closeable {
 	if (inputStream == null) {
 	    throw new IllegalArgumentException("Input stream is null!");
 	}
-	reader = new InputStreamReader(inputStream);
+	reader = new InputStreamReader(inputStream, Charset.defaultCharset());
     }
 
     /**

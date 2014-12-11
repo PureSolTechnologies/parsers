@@ -70,7 +70,7 @@
 		<site>
 			<id>FTPPureSolTechnologiesCom</id>
 			<name>FTPPureSolTechnologiesCom</name>
-			<url>ftp://puresol-technologies.com/opensource/parsers</url>
+			<url>ftp://puresol-technologies.com/opensource.puresol-technologies.com/projects/parsers</url>
 		</site>
 	</distributionManagement>
 

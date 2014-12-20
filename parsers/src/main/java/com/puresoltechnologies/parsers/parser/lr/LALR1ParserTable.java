@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.puresoltechnologies.commons.os.FileUtilities;
+import com.puresoltechnologies.commons.misc.FileUtilities;
 import com.puresoltechnologies.parsers.grammar.Grammar;
 import com.puresoltechnologies.parsers.grammar.GrammarException;
 import com.puresoltechnologies.parsers.grammar.production.Construction;

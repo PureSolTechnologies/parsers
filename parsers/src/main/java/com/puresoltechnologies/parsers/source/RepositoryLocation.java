@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
-import com.puresoltechnologies.commons.misc.FileSearchConfiguration;
+import com.puresoltechnologies.commons.misc.io.FileSearchConfiguration;
 
 /**
  * This is an interface for a repository source. The actual implementation may

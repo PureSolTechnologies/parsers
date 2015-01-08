@@ -11,10 +11,10 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.puresoltechnologies.commons.misc.HashAlgorithm;
-import com.puresoltechnologies.commons.misc.HashCodeGenerator;
-import com.puresoltechnologies.commons.misc.HashId;
-import com.puresoltechnologies.commons.misc.LineTerminator;
+import com.puresoltechnologies.commons.misc.hash.HashAlgorithm;
+import com.puresoltechnologies.commons.misc.hash.HashCodeGenerator;
+import com.puresoltechnologies.commons.misc.hash.HashId;
+import com.puresoltechnologies.commons.misc.io.LineTerminator;
 
 /**
  * This class represents a whole source code from a file and additional later

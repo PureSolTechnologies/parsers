@@ -1,6 +1,7 @@
 package com.puresoltechnologies.parsers.parser.items;
 
-import com.puresoltechnologies.commons.types.ObjectUtilities;
+import java.util.Objects;
+
 import com.puresoltechnologies.parsers.grammar.production.Construction;
 import com.puresoltechnologies.parsers.grammar.production.Production;
 
@@ -29,8 +30,7 @@ public class LR0Item implements Item {
     public LR0Item(Production production, int position) {
 	this.production = production;
 	this.position = position;
-	hashCode = ObjectUtilities.calculateConstantHashCode(production,
-		position);
+	hashCode = Objects.hash(production, position);
     }
 
     /**

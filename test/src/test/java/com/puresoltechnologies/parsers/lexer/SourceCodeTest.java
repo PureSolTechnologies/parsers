@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.puresoltechnologies.commons.misc.FileUtilities;
-import com.puresoltechnologies.commons.misc.PathUtils;
+import com.puresoltechnologies.commons.misc.io.FileUtilities;
+import com.puresoltechnologies.commons.misc.io.PathUtils;
 import com.puresoltechnologies.parsers.source.SourceCode;
 import com.puresoltechnologies.parsers.source.SourceCodeLine;
 import com.puresoltechnologies.parsers.source.SourceFileLocation;

@@ -1,6 +1,7 @@
 package com.puresoltechnologies.parsers.parser.items;
 
-import com.puresoltechnologies.commons.types.ObjectUtilities;
+import java.util.Objects;
+
 import com.puresoltechnologies.parsers.grammar.production.Production;
 import com.puresoltechnologies.parsers.grammar.production.Terminal;
 
@@ -21,8 +22,7 @@ public class LR1Item extends LR0Item {
     public LR1Item(Production production, int position, Terminal lookahead) {
 	super(production, position);
 	this.lookahead = lookahead;
-	hashCode = ObjectUtilities.calculateConstantHashCode(super.hashCode(),
-		lookahead);
+	hashCode = Objects.hash(super.hashCode(), lookahead);
     }
 
     /**

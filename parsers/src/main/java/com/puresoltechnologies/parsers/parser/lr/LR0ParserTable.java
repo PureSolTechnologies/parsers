@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.puresoltechnologies.commons.misc.FileUtilities;
+import com.puresoltechnologies.commons.misc.io.FileUtilities;
 import com.puresoltechnologies.parsers.grammar.Grammar;
 import com.puresoltechnologies.parsers.grammar.GrammarException;
 import com.puresoltechnologies.parsers.grammar.production.Construction;

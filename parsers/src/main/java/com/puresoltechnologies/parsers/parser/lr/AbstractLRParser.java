@@ -20,7 +20,7 @@ import com.puresoltechnologies.parsers.lexer.TokenStream;
 import com.puresoltechnologies.parsers.parser.AbstractParser;
 import com.puresoltechnologies.parsers.parser.Parser;
 import com.puresoltechnologies.parsers.parser.ParserException;
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.parser.parsetable.ActionType;
 import com.puresoltechnologies.parsers.parser.parsetable.ParserAction;
 import com.puresoltechnologies.parsers.parser.parsetable.ParserActionSet;
@@ -159,7 +159,7 @@ public abstract class AbstractLRParser extends AbstractParser {
      * {@inheritDoc}
      */
     @Override
-    public final ParserTree parse(TokenStream tokenStream)
+    public final ParseTreeNode parse(TokenStream tokenStream)
 	    throws ParserException {
 	startTime = System.currentTimeMillis();
 	setTokenStream(tokenStream);
@@ -207,7 +207,7 @@ public abstract class AbstractLRParser extends AbstractParser {
      * @return The result AST is returned.
      * @throws ParserException
      */
-    private final ParserTree parse() throws ParserException {
+    private final ParseTreeNode parse() throws ParserException {
 	try {
 	    createActionStack();
 	    return LRTokenStreamConverter.convert(getTokenStream(),
@@ -221,7 +221,7 @@ public abstract class AbstractLRParser extends AbstractParser {
     /**
      * This method is the actual parsing. The parser creates an action stack
      * which can be later convertered with a {@link LRTokenStreamConverter} into
-     * a {@link ParserTree}.
+     * a {@link ParseTreeNode}.
      * 
      * @throws ParserException
      * @throws GrammarException

@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 
 public class GrammarFileTest {
 
@@ -26,7 +26,7 @@ public class GrammarFileTest {
 		assertNotNull(inputStream);
 		GrammarFile file = new GrammarFile(inputStream);
 		try {
-			ParserTree ast = file.getParserTree();
+			ParseTreeNode ast = file.getParserTree();
 			assertNotNull(ast);
 		} finally {
 			file.close();

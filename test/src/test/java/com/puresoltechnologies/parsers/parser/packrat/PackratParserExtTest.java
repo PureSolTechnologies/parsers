@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.puresoltechnologies.parsers.grammar.Grammar;
 import com.puresoltechnologies.parsers.grammar.GrammarConverter;
 import com.puresoltechnologies.parsers.grammar.GrammarFile;
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.source.FixedCodeLocation;
 import com.puresoltechnologies.parsers.source.SourceCodeLocation;
 import com.puresoltechnologies.trees.TreePrinter;
@@ -24,7 +24,7 @@ import com.puresoltechnologies.trees.TreePrinter;
  */
 public class PackratParserExtTest {
 
-    private ParserTree parseText(SourceCodeLocation source) throws Throwable {
+    private ParseTreeNode parseText(SourceCodeLocation source) throws Throwable {
 	InputStream inputStream = getClass()
 		.getResourceAsStream(
 			"/com/puresoltechnologies/parsers/grammar/TestGrammarForJavaPrimaryExpressions.g");
@@ -36,7 +36,7 @@ public class PackratParserExtTest {
 			grammarFile.getParserTree()).getGrammar();
 		assertNotNull(grammar);
 		PackratParser parser = new PackratParser(grammar);
-		ParserTree parseTree = parser.parse(source.getSourceCode());
+		ParseTreeNode parseTree = parser.parse(source.getSourceCode());
 		assertNotNull(parseTree);
 		TreePrinter printer = new TreePrinter(System.out);
 		printer.println(parseTree);

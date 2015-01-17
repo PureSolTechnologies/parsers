@@ -9,7 +9,7 @@ import com.puresoltechnologies.parsers.grammar.TestGrammars;
 import com.puresoltechnologies.parsers.lexer.Lexer;
 import com.puresoltechnologies.parsers.lexer.RegExpLexer;
 import com.puresoltechnologies.parsers.parser.Parser;
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.source.SourceCode;
 import com.puresoltechnologies.parsers.source.UnspecifiedSourceCodeLocation;
 import com.puresoltechnologies.trees.TreePrinter;
@@ -21,7 +21,7 @@ public class LALR1ParserTest {
 	Grammar grammar = TestGrammars.getLALR1TestGrammarFromDragonBook();
 	Parser parser = new LALR1Parser(grammar);
 	Lexer lexer = new RegExpLexer(grammar);
-	ParserTree syntaxTree = parser.parse(lexer.lex(SourceCode
+	ParseTreeNode syntaxTree = parser.parse(lexer.lex(SourceCode
 		.read(new StringReader("id=*id"),
 			new UnspecifiedSourceCodeLocation())));
 	new TreePrinter(System.out).println(syntaxTree);

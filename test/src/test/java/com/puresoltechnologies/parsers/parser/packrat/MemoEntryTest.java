@@ -6,7 +6,7 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.parser.packrat.MemoEntry;
 import com.puresoltechnologies.parsers.parser.packrat.Status;
 
@@ -20,7 +20,7 @@ public class MemoEntryTest {
 
     @Test
     public void testInitialValuesForSuccess() {
-	ParserTree tree = new ParserTree("TEST");
+	ParseTreeNode tree = new ParseTreeNode("TEST");
 	MemoEntry success = MemoEntry.success(1, 2, tree);
 	assertEquals(1, success.getDeltaPosition());
 	assertEquals(2, success.getDeltaLine());
@@ -38,8 +38,8 @@ public class MemoEntryTest {
 
     @Test
     public void testCompareTo() {
-	MemoEntry success = MemoEntry.success(1, 2, new ParserTree("TEST"));
-	MemoEntry success2 = MemoEntry.success(2, 3, new ParserTree("TEST2"));
+	MemoEntry success = MemoEntry.success(1, 2, new ParseTreeNode("TEST"));
+	MemoEntry success2 = MemoEntry.success(2, 3, new ParseTreeNode("TEST2"));
 	MemoEntry failure = MemoEntry.failed();
 
 	assertEquals(1, success2.compareTo(success));

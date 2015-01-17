@@ -2,12 +2,16 @@ package com.puresoltechnologies.parsers.parser;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.puresoltechnologies.parsers.grammar.production.Production;
 import com.puresoltechnologies.parsers.lexer.Token;
 import com.puresoltechnologies.trees.Tree;
 import com.puresoltechnologies.trees.TreeException;
+import com.puresoltechnologies.trees.TreeLink;
+import com.puresoltechnologies.trees.TreeNode;
 import com.puresoltechnologies.trees.TreeVisitor;
 import com.puresoltechnologies.trees.TreeWalker;
 import com.puresoltechnologies.trees.WalkingAction;
@@ -20,7 +24,8 @@ import com.puresoltechnologies.trees.WalkingAction;
  * @author Rick-Rainer Ludwig
  * 
  */
-public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
+public class ParseTreeNode implements TreeNode<ParseTreeNode>, Serializable,
+	Cloneable {
 
     private static final long serialVersionUID = -651453440127029204L;
 
@@ -35,11 +40,11 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
     /**
      * Contains the reference to the parent node if present.
      */
-    private ParserTree parent = null;
+    private ParseTreeNode parent = null;
     /**
      * This field contains all references to the node's children.
      */
-    private final ArrayList<ParserTree> children = new ArrayList<ParserTree>();
+    private final ArrayList<ParseTreeNode> children = new ArrayList<ParseTreeNode>();
     /**
      * This flag specifies whether the node is allowed to be a node or not. If
      * not, the children will be assigned to its parent on the location of
@@ -58,7 +63,7 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
      */
     private ParserTreeMetaData metaData = null;
 
-    public ParserTree(Token token) {
+    public ParseTreeNode(Token token) {
 	super();
 	this.name = token.getName();
 	this.token = token;
@@ -66,21 +71,21 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
 	this.stackingAllowed = true;
     }
 
-    public ParserTree(Production production) {
+    public ParseTreeNode(Production production) {
 	this.name = production.getAlternativeName();
 	this.token = null;
 	this.node = production.isNode();
 	this.stackingAllowed = production.isStackingAllowed();
     }
 
-    public ParserTree(String name) {
+    public ParseTreeNode(String name) {
 	this.name = name;
 	this.token = null;
 	this.node = true;
 	this.stackingAllowed = true;
     }
 
-    public ParserTree(String name, Token token, boolean node,
+    public ParseTreeNode(String name, Token token, boolean node,
 	    boolean stackingAllowed) {
 	this.name = name;
 	this.token = token;
@@ -107,7 +112,7 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
      * @param parent
      *            the parent to set
      */
-    public void setParent(ParserTree parent) {
+    public void setParent(ParseTreeNode parent) {
 	this.parent = parent;
     }
 
@@ -115,12 +120,12 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
      * @return the parent
      */
     @Override
-    public ParserTree getParent() {
+    public ParseTreeNode getParent() {
 	return parent;
     }
 
-    public ParserTree getRoot() {
-	ParserTree root = this;
+    public ParseTreeNode getRoot() {
+	ParseTreeNode root = this;
 	while (root.getParent() != null) {
 	    root = root.getParent();
 	}
@@ -136,31 +141,41 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
      * @return the children
      */
     @Override
-    public List<ParserTree> getChildren() {
+    public List<ParseTreeNode> getChildren() {
 	return children;
     }
 
-    public void addChild(ParserTree child) throws TreeException {
+    @Override
+    public Set<TreeLink<ParseTreeNode>> getEdges() {
+	Set<TreeLink<ParseTreeNode>> edges = new HashSet<>();
+	edges.add(new TreeLink<>(parent, this));
+	for (ParseTreeNode child : children) {
+	    edges.add(new TreeLink<ParseTreeNode>(this, child));
+	}
+	return edges;
+    }
+
+    public void addChild(ParseTreeNode child) throws TreeException {
 	children.add(child);
 	child.setParent(this);
     }
 
-    public void addChildren(List<ParserTree> children) throws TreeException {
+    public void addChildren(List<ParseTreeNode> children) throws TreeException {
 	this.children.addAll(children);
-	for (ParserTree child : children) {
+	for (ParseTreeNode child : children) {
 	    child.setParent(this);
 	}
     }
 
-    public void addChildInFront(ParserTree child) throws TreeException {
+    public void addChildInFront(ParseTreeNode child) throws TreeException {
 	children.add(0, child);
 	child.setParent(this);
     }
 
-    public void addChildrenInFront(List<ParserTree> children)
+    public void addChildrenInFront(List<ParseTreeNode> children)
 	    throws TreeException {
 	this.children.addAll(0, children);
-	for (ParserTree child : children) {
+	for (ParseTreeNode child : children) {
 	    child.setParent(this);
 	}
     }
@@ -178,9 +193,9 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
      *             is thrown if there is more than one child with the given
      *             name.
      */
-    public ParserTree getChild(String name) throws TreeException {
-	ParserTree result = null;
-	for (ParserTree child : children) {
+    public ParseTreeNode getChild(String name) throws TreeException {
+	ParseTreeNode result = null;
+	for (ParseTreeNode child : children) {
 	    if (child.getName().equals(name)) {
 		if (result != null) {
 		    throw new TreeException("Child '" + name
@@ -199,9 +214,9 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
      * @throws TreeException
      *             is thrown in cases of tree issues.
      */
-    public List<ParserTree> getChildren(String name) throws TreeException {
-	List<ParserTree> result = new ArrayList<ParserTree>();
-	for (ParserTree child : children) {
+    public List<ParseTreeNode> getChildren(String name) throws TreeException {
+	List<ParseTreeNode> result = new ArrayList<ParseTreeNode>();
+	for (ParseTreeNode child : children) {
 	    if (child.getName().equals(name)) {
 		result.add(child);
 	    }
@@ -217,7 +232,7 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
      * @return true is returned in case a child with the specified name exists.
      */
     public boolean hasChild(String name) {
-	for (ParserTree child : children) {
+	for (ParseTreeNode child : children) {
 	    if (child.getName().equals(name)) {
 		return true;
 	    }
@@ -246,28 +261,28 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
 	return stackingAllowed;
     }
 
-    public List<ParserTree> getSubTrees(String name) {
-	List<ParserTree> subTrees = new ArrayList<ParserTree>();
+    public List<ParseTreeNode> getSubTrees(String name) {
+	List<ParseTreeNode> subTrees = new ArrayList<ParseTreeNode>();
 	getSubTrees(this, subTrees, name);
 	return subTrees;
     }
 
-    private void getSubTrees(ParserTree branch, List<ParserTree> subTrees,
+    private void getSubTrees(ParseTreeNode branch, List<ParseTreeNode> subTrees,
 	    String name) {
 	if (branch.getName().equals(name)) {
 	    subTrees.add(branch);
 	}
-	for (ParserTree subBranch : branch.getChildren()) {
+	for (ParseTreeNode subBranch : branch.getChildren()) {
 	    getSubTrees(subBranch, subTrees, name);
 	}
     }
 
-    private static class TextWalkerClient implements TreeVisitor<ParserTree> {
+    private static class TextWalkerClient implements TreeVisitor<ParseTreeNode> {
 
 	private final StringBuffer text = new StringBuffer();
 
 	@Override
-	public WalkingAction visit(ParserTree syntaxTree) {
+	public WalkingAction visit(ParseTreeNode syntaxTree) {
 	    Token token = syntaxTree.getToken();
 	    if (token != null) {
 		text.append(token.getText());
@@ -282,7 +297,7 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
     }
 
     public String getText() {
-	TreeWalker<ParserTree> treeWalker = new TreeWalker<ParserTree>(this);
+	TreeWalker<ParseTreeNode> treeWalker = new TreeWalker<ParseTreeNode>(this);
 	TextWalkerClient textClient = new TextWalkerClient();
 	treeWalker.walk(textClient);
 	return textClient.getText();
@@ -307,30 +322,30 @@ public class ParserTree implements Tree<ParserTree>, Serializable, Cloneable {
 	return buffer.toString();
     }
 
-    private void fillBuffer(StringBuffer buffer, ParserTree parserTree,
+    private void fillBuffer(StringBuffer buffer, ParseTreeNode parserTree,
 	    int depth) {
 	for (int i = 0; i < depth; i++) {
 	    buffer.append("  ");
 	}
 	buffer.append(parserTree.getName() + ": \"" + parserTree.getText()
 		+ "\"\n");
-	for (ParserTree child : parserTree.getChildren()) {
+	for (ParseTreeNode child : parserTree.getChildren()) {
 	    fillBuffer(buffer, child, depth + 1);
 	}
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public ParserTree clone() {
-	ParserTree cloned;
+    public ParseTreeNode clone() {
+	ParseTreeNode cloned;
 	if (token != null)
-	    cloned = new ParserTree(name, token.clone(), node, stackingAllowed);
+	    cloned = new ParseTreeNode(name, token.clone(), node, stackingAllowed);
 	else
-	    cloned = new ParserTree(name, null, node, stackingAllowed);
+	    cloned = new ParseTreeNode(name, null, node, stackingAllowed);
 	cloned.parent = parent;
 	if (metaData != null)
 	    cloned.metaData = metaData.clone();
-	cloned.children.addAll((ArrayList<ParserTree>) children.clone());
+	cloned.children.addAll((ArrayList<ParseTreeNode>) children.clone());
 	return cloned;
     }
 }

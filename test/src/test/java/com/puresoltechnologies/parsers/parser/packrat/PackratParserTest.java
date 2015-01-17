@@ -23,7 +23,7 @@ import com.puresoltechnologies.parsers.grammar.token.TokenDefinition;
 import com.puresoltechnologies.parsers.grammar.token.TokenDefinitionSet;
 import com.puresoltechnologies.parsers.grammar.token.Visibility;
 import com.puresoltechnologies.parsers.lexer.Token;
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.source.FixedCodeLocation;
 import com.puresoltechnologies.parsers.source.SourceCode;
 import com.puresoltechnologies.parsers.source.StringWithLocation;
@@ -40,11 +40,11 @@ public class PackratParserTest {
     private static Grammar nestedRecursionsGrammar;
     private static Grammar testGrammar;
 
-    private ParserTree parseText(Grammar grammar, String text) throws Exception {
+    private ParseTreeNode parseText(Grammar grammar, String text) throws Exception {
 	PackratParser parser = new PackratParser(grammar);
 	FixedCodeLocation codeLocation = new FixedCodeLocation(text);
 	SourceCode sourceCode = codeLocation.getSourceCode();
-	ParserTree parseTree = parser.parse(sourceCode);
+	ParseTreeNode parseTree = parser.parse(sourceCode);
 	assertNotNull(parseTree);
 	checkForCorrectParents(parseTree);
 	TreePrinter printer = new TreePrinter(System.out);
@@ -75,15 +75,15 @@ public class PackratParserTest {
      * @param parseTree
      * @throws Exception
      */
-    private void checkForCorrectParents(ParserTree parseTree) throws Exception {
-	final Field parentField = ParserTree.class.getDeclaredField("parent");
+    private void checkForCorrectParents(ParseTreeNode parseTree) throws Exception {
+	final Field parentField = ParseTreeNode.class.getDeclaredField("parent");
 	parentField.setAccessible(true);
-	TreeVisitor<ParserTree> visitor = new TreeVisitor<ParserTree>() {
+	TreeVisitor<ParseTreeNode> visitor = new TreeVisitor<ParseTreeNode>() {
 
 	    @Override
-	    public WalkingAction visit(ParserTree tree) {
+	    public WalkingAction visit(ParseTreeNode tree) {
 		try {
-		    for (ParserTree child : tree.getChildren()) {
+		    for (ParseTreeNode child : tree.getChildren()) {
 			assertEquals("Parent entry in child is not correct!",
 				tree, parentField.get(child));
 		    }
@@ -95,7 +95,7 @@ public class PackratParserTest {
 		return WalkingAction.PROCEED;
 	    }
 	};
-	new TreeWalker<ParserTree>(parseTree).walk(visitor);
+	new TreeWalker<ParseTreeNode>(parseTree).walk(visitor);
 	parentField.setAccessible(false);
     }
 
@@ -161,7 +161,7 @@ public class PackratParserTest {
 	/*
 	 * process some white spaces...
 	 */
-	ParserTree parserTree = new ParserTree("ROOT");
+	ParseTreeNode parserTree = new ParseTreeNode("ROOT");
 	MemoEntry memoEntry = parser.processIgnoredTokens(parserTree, 0, 1);
 
 	assertEquals(3, memoEntry.getDeltaPosition());

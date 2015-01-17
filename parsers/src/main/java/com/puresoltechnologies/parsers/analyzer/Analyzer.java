@@ -7,7 +7,7 @@ import com.puresoltechnologies.parsers.lexer.LexerException;
 import com.puresoltechnologies.parsers.lexer.TokenStream;
 import com.puresoltechnologies.parsers.parser.Parser;
 import com.puresoltechnologies.parsers.parser.ParserException;
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.preprocessor.Preprocessor;
 import com.puresoltechnologies.parsers.preprocessor.PreprocessorException;
 import com.puresoltechnologies.parsers.source.SourceCode;
@@ -36,7 +36,7 @@ public class Analyzer {
 		parser = grammar.createParser(classLoader);
 	}
 
-	public ParserTree analyze(SourceCode sourceCode) throws LexerException,
+	public ParseTreeNode analyze(SourceCode sourceCode) throws LexerException,
 			ParserException, PreprocessorException {
 		SourceCode preProcessedSourceCode;
 		if (preprocessor != null) {

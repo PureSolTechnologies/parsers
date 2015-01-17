@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 
 /**
  * This class is for reading Nyota Uhura grammar files. The grammar file is read
@@ -30,7 +30,7 @@ import com.puresoltechnologies.parsers.parser.ParserTree;
  */
 public class GrammarReader implements Closeable {
 
-    private final ParserTree ast;
+    private final ParseTreeNode ast;
     private final GrammarConverter converter;
     private final GrammarFile grammarFile;
 
@@ -65,7 +65,7 @@ public class GrammarReader implements Closeable {
 	converter = new GrammarConverter(ast);
     }
 
-    public ParserTree getAST() {
+    public ParseTreeNode getAST() {
 	return ast;
     }
 

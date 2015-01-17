@@ -21,7 +21,7 @@ import com.puresoltechnologies.parsers.parser.ParserException;
 import com.puresoltechnologies.parsers.parser.ParserFactory;
 import com.puresoltechnologies.parsers.parser.ParserFactoryException;
 import com.puresoltechnologies.parsers.parser.ParserManager;
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.source.SourceCode;
 import com.puresoltechnologies.trees.TreePrinter;
 
@@ -52,7 +52,7 @@ public class GrammarPartTester {
 		    .fromStringArray(lines));
 
 	    Parser parser = ParserFactory.create(grammar);
-	    ParserTree ast = parser.parse(tokenStream);
+	    ParseTreeNode ast = parser.parse(tokenStream);
 	    if (logger.isTraceEnabled()) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		new TreePrinter(new PrintStream(out)).println(ast);
@@ -98,7 +98,7 @@ public class GrammarPartTester {
 	    Parser parser = ParserManager.getManagerParser(parserDirectory,
 		    parserName, grammar);
 	    watch.start();
-	    ParserTree ast = parser.parse(tokenStream);
+	    ParseTreeNode ast = parser.parse(tokenStream);
 	    watch.stop();
 	    logger.debug("Parser time: " + watch);
 	    if (logger.isTraceEnabled()) {

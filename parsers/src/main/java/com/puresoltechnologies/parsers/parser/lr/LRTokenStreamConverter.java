@@ -12,7 +12,7 @@ import com.puresoltechnologies.parsers.grammar.token.Visibility;
 import com.puresoltechnologies.parsers.lexer.Token;
 import com.puresoltechnologies.parsers.lexer.TokenStream;
 import com.puresoltechnologies.parsers.parser.ParserException;
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.parser.ParserTreeMetaData;
 import com.puresoltechnologies.parsers.parser.parsetable.ParserAction;
 import com.puresoltechnologies.parsers.source.UnspecifiedSourceCodeLocation;
@@ -32,7 +32,7 @@ public class LRTokenStreamConverter {
     private static final Logger logger = LoggerFactory
 	    .getLogger(LRTokenStreamConverter.class);
 
-    public static ParserTree convert(TokenStream tokenStream, Grammar grammar,
+    public static ParseTreeNode convert(TokenStream tokenStream, Grammar grammar,
 	    List<ParserAction> actions) throws ParserException {
 	return new LRTokenStreamConverter(tokenStream, grammar, actions)
 		.getParserTree();
@@ -42,7 +42,7 @@ public class LRTokenStreamConverter {
     private final Grammar grammar;
     private final List<ParserAction> actions;
     private final boolean ignoredTokensLeading;
-    private final Stack<ParserTree> treeStack = new Stack<ParserTree>();
+    private final Stack<ParseTreeNode> treeStack = new Stack<ParseTreeNode>();
     int position;
 
     private LRTokenStreamConverter(TokenStream tokenStream, Grammar grammar,
@@ -55,8 +55,8 @@ public class LRTokenStreamConverter {
 		.getProperty("grammar.ignored-leading"));
     }
 
-    private ParserTree getParserTree() throws ParserException {
-	ParserTree tree = convert();
+    private ParseTreeNode getParserTree() throws ParserException {
+	ParseTreeNode tree = convert();
 	tree = addMetaData(tree);
 	return tree;
     }
@@ -66,7 +66,7 @@ public class LRTokenStreamConverter {
 	treeStack.clear();
     }
 
-    private ParserTree convert() throws ParserException {
+    private ParseTreeNode convert() throws ParserException {
 	try {
 	    reset();
 	    for (ParserAction action : actions) {
@@ -107,14 +107,14 @@ public class LRTokenStreamConverter {
 	 */
 	while (position < tokenStream.size()) {
 	    treeStack.peek()
-		    .addChild(new ParserTree(tokenStream.get(position)));
+		    .addChild(new ParseTreeNode(tokenStream.get(position)));
 	    position++;
 	}
 	/*
 	 * Put remaining tokens from tree stack at the beginning.
 	 */
 	if (treeStack.size() > 1) {
-	    ParserTree treeElement = treeStack.pop();
+	    ParseTreeNode treeElement = treeStack.pop();
 	    while (treeStack.size() > 0) {
 		treeElement.addChildInFront(treeStack.pop());
 	    }
@@ -124,23 +124,23 @@ public class LRTokenStreamConverter {
 
     private void shift() {
 	while (tokenStream.get(position).getVisibility() != Visibility.VISIBLE) {
-	    treeStack.push(new ParserTree(tokenStream.get(position)));
+	    treeStack.push(new ParseTreeNode(tokenStream.get(position)));
 	    position++;
 	}
-	treeStack.push(new ParserTree(tokenStream.get(position)));
+	treeStack.push(new ParseTreeNode(tokenStream.get(position)));
 	position++;
     }
 
     private void reduce(ParserAction action) throws TreeException {
 	Production production = grammar.getProduction(action.getParameter());
 	logger.trace(production.toString());
-	ParserTree newAST = new ParserTree(production);
+	ParseTreeNode newAST = new ParseTreeNode(production);
 	for (int i = 0; i < production.getConstructions().size(); i++) {
 	    /*
 	     * The for loop is run as many times as the production contains
 	     * constructions which are added up for an AST node.
 	     */
-	    ParserTree poppedAST;
+	    ParseTreeNode poppedAST;
 	    do {
 		poppedAST = treeStack.pop();
 		if (poppedAST.isNode()) {
@@ -195,11 +195,11 @@ public class LRTokenStreamConverter {
 	treeStack.push(newAST);
     }
 
-    private ParserTree addMetaData(ParserTree tree) {
-	TreeIterator<ParserTree> iterator = new TreeIterator<ParserTree>(tree);
+    private ParseTreeNode addMetaData(ParseTreeNode tree) {
+	TreeIterator<ParseTreeNode> iterator = new TreeIterator<ParseTreeNode>(tree);
 	int line = 1;
 	do {
-	    final ParserTree currentNode = iterator.getCurrentNode();
+	    final ParseTreeNode currentNode = iterator.getCurrentNode();
 	    final Token token = currentNode.getToken();
 	    if (token != null) {
 		final int lineNum = token.getMetaData().getLineNum();
@@ -210,12 +210,12 @@ public class LRTokenStreamConverter {
 	} while (iterator.goForward());
 	iterator.gotoEnd();
 	do {
-	    final ParserTree currentNode = iterator.getCurrentNode();
+	    final ParseTreeNode currentNode = iterator.getCurrentNode();
 	    final Token token = currentNode.getToken();
 	    if (token != null) {
 		line = currentNode.getMetaData().getLine();
 	    } else {
-		List<ParserTree> children = currentNode.getChildren();
+		List<ParseTreeNode> children = currentNode.getChildren();
 		if (children.size() == 0) {
 		    currentNode.setMetaData(new ParserTreeMetaData(
 			    new UnspecifiedSourceCodeLocation(), line, 1));

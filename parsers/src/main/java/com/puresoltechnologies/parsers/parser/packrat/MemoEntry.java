@@ -3,7 +3,7 @@ package com.puresoltechnologies.parsers.parser.packrat;
 import java.io.Serializable;
 
 import com.puresoltechnologies.parsers.parser.ParserException;
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 
 /**
  * This is a memo entry for packrat parsing. The memoization process keeps all
@@ -25,7 +25,7 @@ class MemoEntry implements Serializable, Comparable<MemoEntry> {
      * @param tree
      * @return
      */
-    static MemoEntry success(int deltaPosition, int deltaLine, ParserTree tree) {
+    static MemoEntry success(int deltaPosition, int deltaLine, ParseTreeNode tree) {
 	return new MemoEntry(deltaPosition, deltaLine, tree);
     }
 

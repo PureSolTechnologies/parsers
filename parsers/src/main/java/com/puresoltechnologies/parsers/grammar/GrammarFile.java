@@ -17,7 +17,7 @@ import com.puresoltechnologies.parsers.lexer.RegExpLexer;
 import com.puresoltechnologies.parsers.lexer.TokenStream;
 import com.puresoltechnologies.parsers.parser.Parser;
 import com.puresoltechnologies.parsers.parser.ParserException;
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.parser.lr.SLR1Parser;
 import com.puresoltechnologies.parsers.source.SourceCode;
 import com.puresoltechnologies.parsers.source.UnspecifiedSourceCodeLocation;
@@ -37,7 +37,7 @@ public class GrammarFile implements Closeable {
     private final Grammar uhuraGrammar = UhuraGrammar.getGrammar();;
     private final Reader reader;
 
-    private ParserTree parserTree = null;
+    private ParseTreeNode parserTree = null;
 
     /**
      * Constructor for InputStream reading.
@@ -69,13 +69,13 @@ public class GrammarFile implements Closeable {
      * This method returns the syntax tree from the read grammar file to
      * retrieve additional information if needed.
      * 
-     * @return A {@link ParserTree} is returned.
+     * @return A {@link ParseTreeNode} is returned.
      * @throws GrammarException
      *             is thrown in case of grammar issues.
      * @throws IOException
      *             is thrown in case of IO issues.
      */
-    public ParserTree getParserTree() throws IOException, GrammarException {
+    public ParseTreeNode getParserTree() throws IOException, GrammarException {
 	if (parserTree == null) {
 	    read();
 	}

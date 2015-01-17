@@ -23,7 +23,7 @@ import com.puresoltechnologies.parsers.grammar.token.Visibility;
 import com.puresoltechnologies.parsers.lexer.Token;
 import com.puresoltechnologies.parsers.lexer.TokenMetaData;
 import com.puresoltechnologies.parsers.parser.ParserException;
-import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.source.SourceCode;
 import com.puresoltechnologies.parsers.source.SourceCodeLine;
 import com.puresoltechnologies.parsers.source.SourceCodeLocation;
@@ -148,11 +148,11 @@ public class PackratParser implements Serializable {
      * 
      * @param sourceCode
      *            is the {@link SourceCode} to be parser.
-     * @return A {@link ParserTree} with the parser result is returned.
+     * @return A {@link ParseTreeNode} with the parser result is returned.
      * @throws ParserException
      *             is thrown in case the parser could not read the source.
      */
-    public ParserTree parse(SourceCode sourceCode) throws ParserException {
+    public ParseTreeNode parse(SourceCode sourceCode) throws ParserException {
 	return parse(sourceCode, "_START_");
     }
 
@@ -184,11 +184,11 @@ public class PackratParser implements Serializable {
      * @param production
      *            is the name of the production to be used as root production
      *            for the parse process.
-     * @return A {@link ParserTree} is returned with the parser result.
+     * @return A {@link ParseTreeNode} is returned with the parser result.
      * @throws ParserException
      *             is thrown in case the parser could not parse the source.
      */
-    public ParserTree parse(SourceCode sourceCode, String production)
+    public ParseTreeNode parse(SourceCode sourceCode, String production)
 	    throws ParserException {
 	try {
 	    initialize(sourceCode);
@@ -209,7 +209,7 @@ public class PackratParser implements Serializable {
 		}
 
 	    }
-	    ParserTree parserTree = (ParserTree) answer;
+	    ParseTreeNode parserTree = (ParseTreeNode) answer;
 	    normalizeParents(parserTree);
 	    return parserTree;
 	} catch (TreeException e) {
@@ -518,7 +518,7 @@ public class PackratParser implements Serializable {
 	for (Production production : grammar.getProductions().get(
 		productionName)) {
 	    MemoEntry progress = parseProduction(production, position, line);
-	    if (progress.getAnswer() instanceof ParserTree) {
+	    if (progress.getAnswer() instanceof ParseTreeNode) {
 		if ((maxProgress.getAnswer() == Status.FAILED)
 			|| (maxProgress.getDeltaPosition() < progress
 				.getDeltaPosition())) {
@@ -544,7 +544,7 @@ public class PackratParser implements Serializable {
      */
     private MemoEntry parseProduction(Production production, int position,
 	    int line) throws TreeException, ParserException {
-	ParserTree node = new ParserTree(production);
+	ParseTreeNode node = new ParseTreeNode(production);
 	MemoEntry progress = MemoEntry.success(0, 0, node);
 	for (Construction construction : production.getConstructions()) {
 	    processIgnoredLeadingTokens(node, position, line, progress);
@@ -552,8 +552,8 @@ public class PackratParser implements Serializable {
 		MemoEntry newProgress = applyRule(construction.getName(),
 			position + progress.getDeltaPosition(),
 			line + progress.getDeltaLine());
-		if (newProgress.getAnswer() instanceof ParserTree) {
-		    ParserTree child = (ParserTree) newProgress.getAnswer();
+		if (newProgress.getAnswer() instanceof ParseTreeNode) {
+		    ParseTreeNode child = (ParseTreeNode) newProgress.getAnswer();
 		    if (child.isNode()) {
 			if (child.isStackingAllowed()) {
 			    node.addChild(child);
@@ -575,7 +575,7 @@ public class PackratParser implements Serializable {
 			(Terminal) construction,
 			position + progress.getDeltaPosition(),
 			line + progress.getDeltaLine());
-		if (newProgress.getAnswer() instanceof ParserTree) {
+		if (newProgress.getAnswer() instanceof ParseTreeNode) {
 		    progress.add(newProgress);
 		} else {
 		    return MemoEntry.failed();
@@ -602,7 +602,7 @@ public class PackratParser implements Serializable {
      * @throws TreeException
      * @throws ParserException
      */
-    private void processIgnoredLeadingTokens(ParserTree node, int position,
+    private void processIgnoredLeadingTokens(ParseTreeNode node, int position,
 	    int line, MemoEntry progress) throws TreeException, ParserException {
 	if (ignoredLeading) {
 	    processIgnoredTokens(node, position, line, progress);
@@ -621,7 +621,7 @@ public class PackratParser implements Serializable {
      * @throws TreeException
      * @throws ParserException
      */
-    private void processIgnoredTrailingTokens(ParserTree node, int position,
+    private void processIgnoredTrailingTokens(ParseTreeNode node, int position,
 	    int line, MemoEntry progress) throws TreeException, ParserException {
 	if (!ignoredLeading) {
 	    processIgnoredTokens(node, position, line, progress);
@@ -636,20 +636,20 @@ public class PackratParser implements Serializable {
      * <p>
      * This is the non-recursive part of the procedure to be called by the
      * packrat parser. The procedure itself is implemented recursively in
-     * {@link #processIgnoredTrailingTokens(ParserTree, int, int, MemoEntry)}.
+     * {@link #processIgnoredTrailingTokens(ParseTreeNode, int, int, MemoEntry)}.
      * </p>
      * <p>
      * Attention: This method is package private for testing purposes!
      * </p>
      * 
      * @param node
-     *            is the current node in the {@link ParserTree}
+     *            is the current node in the {@link ParseTreeNode}
      * @param position
      *            is the current parsing position.
      * @throws TreeException
      * @throws ParserException
      */
-    private void processIgnoredTokens(ParserTree node, int position, int line,
+    private void processIgnoredTokens(ParseTreeNode node, int position, int line,
 	    MemoEntry progress) throws TreeException, ParserException {
 	MemoEntry newProgress = processIgnoredTokens(node,
 		position + progress.getDeltaPosition(),
@@ -669,7 +669,7 @@ public class PackratParser implements Serializable {
      * @return
      * @throws TreeException
      */
-    private MemoEntry processTerminal(ParserTree node, Terminal terminal,
+    private MemoEntry processTerminal(ParseTreeNode node, Terminal terminal,
 	    int position, int line) throws TreeException {
 	printMessage("applyTerminal: " + terminal, position, line);
 	TokenDefinitionSet tokenDefinitions = grammar.getTokenDefinitions();
@@ -705,7 +705,7 @@ public class PackratParser implements Serializable {
      * @throws TreeException
      * @throws ParserException
      */
-    MemoEntry processIgnoredTokens(ParserTree node, int position, int line)
+    MemoEntry processIgnoredTokens(ParseTreeNode node, int position, int line)
 	    throws TreeException, ParserException {
 	MemoEntry progress = MemoEntry.success(0, 0, node);
 	MemoEntry newProgress = MemoEntry.success(0, 0, null);
@@ -733,7 +733,7 @@ public class PackratParser implements Serializable {
      * @return
      * @throws TreeException
      */
-    private MemoEntry processTokenDefinition(ParserTree node,
+    private MemoEntry processTokenDefinition(ParseTreeNode node,
 	    TokenDefinition tokenDefinition, int position, int line)
 	    throws TreeException {
 	Matcher matcher = tokenDefinition.getPattern().matcher(
@@ -750,7 +750,7 @@ public class PackratParser implements Serializable {
 		lineBreakNum + 1, textWithSource.getColumn(position));
 	Token token = new Token(tokenDefinition.getName(), match,
 		tokenDefinition.getVisibility(), metaData);
-	ParserTree myTree = new ParserTree(token);
+	ParseTreeNode myTree = new ParseTreeNode(token);
 	node.addChild(myTree);
 	if (maxPosition < position + match.length()) {
 	    maxPosition = position + match.length();
@@ -776,17 +776,17 @@ public class PackratParser implements Serializable {
      *            is the tree to be normalized.
      * @throws ParserException
      */
-    private void normalizeParents(ParserTree tree) throws ParserException {
+    private void normalizeParents(ParseTreeNode tree) throws ParserException {
 	try {
-	    final Field parentField = ParserTree.class
+	    final Field parentField = ParseTreeNode.class
 		    .getDeclaredField("parent");
 	    parentField.setAccessible(true);
-	    TreeVisitor<ParserTree> visitor = new TreeVisitor<ParserTree>() {
+	    TreeVisitor<ParseTreeNode> visitor = new TreeVisitor<ParseTreeNode>() {
 
 		@Override
-		public WalkingAction visit(ParserTree tree) {
+		public WalkingAction visit(ParseTreeNode tree) {
 		    try {
-			for (ParserTree child : tree.getChildren()) {
+			for (ParseTreeNode child : tree.getChildren()) {
 			    parentField.set(child, tree);
 			}
 			return WalkingAction.PROCEED;
@@ -799,7 +799,7 @@ public class PackratParser implements Serializable {
 		    }
 		}
 	    };
-	    new TreeWalker<ParserTree>(tree).walk(visitor);
+	    new TreeWalker<ParseTreeNode>(tree).walk(visitor);
 	    parentField.setAccessible(false);
 	} catch (SecurityException e) {
 	    throw new ParserException("Could not normalize the parser tree.", e);

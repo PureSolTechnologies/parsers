@@ -26,7 +26,7 @@ public interface Parser extends Serializable, Cloneable {
      * @throws ParserException
      *             os thrown in case of a parser issue.
      */
-    public ParserTree parse(TokenStream tokenStream) throws ParserException;
+    public ParseTreeNode parse(TokenStream tokenStream) throws ParserException;
 
     /**
      * This method is used to generated maximum detail information about the

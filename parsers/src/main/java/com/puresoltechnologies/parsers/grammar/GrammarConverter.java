@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import com.puresoltechnologies.commons.trees.TreeException;
 import com.puresoltechnologies.parsers.grammar.production.Construction;
 import com.puresoltechnologies.parsers.grammar.production.NonTerminal;
 import com.puresoltechnologies.parsers.grammar.production.Production;
@@ -16,6 +15,7 @@ import com.puresoltechnologies.parsers.grammar.token.TokenDefinition;
 import com.puresoltechnologies.parsers.grammar.token.TokenDefinitionSet;
 import com.puresoltechnologies.parsers.grammar.token.Visibility;
 import com.puresoltechnologies.parsers.parser.ParserTree;
+import com.puresoltechnologies.trees.TreeException;
 
 /**
  * This converter converts an AST from a grammar file into a Grammar object. It

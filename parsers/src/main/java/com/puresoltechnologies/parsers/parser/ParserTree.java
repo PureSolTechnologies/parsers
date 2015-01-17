@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.puresoltechnologies.commons.trees.Tree;
-import com.puresoltechnologies.commons.trees.TreeException;
-import com.puresoltechnologies.commons.trees.TreeVisitor;
-import com.puresoltechnologies.commons.trees.TreeWalker;
-import com.puresoltechnologies.commons.trees.WalkingAction;
 import com.puresoltechnologies.parsers.grammar.production.Production;
 import com.puresoltechnologies.parsers.lexer.Token;
+import com.puresoltechnologies.trees.Tree;
+import com.puresoltechnologies.trees.TreeException;
+import com.puresoltechnologies.trees.TreeVisitor;
+import com.puresoltechnologies.trees.TreeWalker;
+import com.puresoltechnologies.trees.WalkingAction;
 
 /**
  * This tree is a parser tree as it is the result of a parser run. This class

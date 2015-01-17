@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.puresoltechnologies.commons.misc.StopWatch;
-import com.puresoltechnologies.commons.trees.TreePrinter;
 import com.puresoltechnologies.parsers.lexer.Lexer;
 import com.puresoltechnologies.parsers.lexer.LexerException;
 import com.puresoltechnologies.parsers.lexer.LexerFactory;
@@ -24,6 +23,7 @@ import com.puresoltechnologies.parsers.parser.ParserFactoryException;
 import com.puresoltechnologies.parsers.parser.ParserManager;
 import com.puresoltechnologies.parsers.parser.ParserTree;
 import com.puresoltechnologies.parsers.source.SourceCode;
+import com.puresoltechnologies.trees.TreePrinter;
 
 /**
  * This class is a simple tester for checking grammars and parts of grammars.

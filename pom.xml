@@ -8,6 +8,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<commons.version>0.4.0-SNAPSHOT</commons.version>
+		<graphs.version>0.4.0-SNAPSHOT</graphs.version>
 	</properties>
 
 	<parent>
@@ -85,9 +86,9 @@
 				<version>${commons.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.puresoltechnologies.commons</groupId>
+				<groupId>com.puresoltechnologies.graphs</groupId>
 				<artifactId>trees</artifactId>
-				<version>${commons.version}</version>
+				<version>${graphs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.puresoltechnologies.parsers</groupId>

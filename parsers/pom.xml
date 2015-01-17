@@ -16,7 +16,7 @@
 			<artifactId>misc</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.puresoltechnologies.commons</groupId>
+			<groupId>com.puresoltechnologies.graphs</groupId>
 			<artifactId>trees</artifactId>
 		</dependency>
 		<dependency>

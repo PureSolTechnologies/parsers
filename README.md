@@ -11,4 +11,4 @@ __Please, use the issue tracker at:__
 
 https://bugs.puresol-technologies.net/projects/parsers
 
-[![Build Status](http://ci.puresol-technologies.net/view/Diverse/job/Parsers/badge/icon)](http://ci.puresol-technologies.net/view/Diverse/job/Parsers/)
+[![Build Status](http://ci.puresol-technologies.net/job/Parsers/badge/icon)](http://ci.puresol-technologies.net/job/Parsers/)

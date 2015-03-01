@@ -96,16 +96,9 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-core-asl</artifactId>
-				<version>1.9.13</version>
-				<!-- This dependency needs to be provided by the container or application -->
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-jaxrs</artifactId>
-				<version>1.9.13</version>
+				<groupId>com.fasterxml.jackson.jaxrs</groupId>
+				<artifactId>jackson-jaxrs-base</artifactId>
+				<version>2.4.1</version>
 				<!-- This dependency needs to be provided by the container or application -->
 				<scope>provided</scope>
 			</dependency>

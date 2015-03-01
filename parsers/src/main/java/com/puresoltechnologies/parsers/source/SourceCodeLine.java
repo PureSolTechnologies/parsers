@@ -3,7 +3,7 @@ package com.puresoltechnologies.parsers.source;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * This class represents a single line of source code taken from a source code

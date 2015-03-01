@@ -9,8 +9,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.puresoltechnologies.commons.misc.hash.HashAlgorithm;
 import com.puresoltechnologies.commons.misc.hash.HashCodeGenerator;
 import com.puresoltechnologies.commons.misc.hash.HashId;

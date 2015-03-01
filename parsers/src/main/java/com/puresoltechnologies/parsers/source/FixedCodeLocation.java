@@ -6,9 +6,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.puresoltechnologies.parsers.lexer.TokenStream;
 
 /**

@@ -14,10 +14,6 @@ public class UnspecifiedSourceCodeLocation extends AbstractSourceCodeLocation {
 	super();
     }
 
-    public UnspecifiedSourceCodeLocation(Properties properties) {
-	super();
-    }
-
     @Override
     @JsonIgnore
     public String getHumanReadableLocationString() {
@@ -35,16 +31,6 @@ public class UnspecifiedSourceCodeLocation extends AbstractSourceCodeLocation {
     public SourceCode getSourceCode() throws IOException {
 	throw new IOException(
 		"This is an unspecified source. There is not source information available where the source can be loaded from.");
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-	return this == obj;
-    }
-
-    @Override
-    public int hashCode() {
-	return 42;
     }
 
     @Override
@@ -80,4 +66,22 @@ public class UnspecifiedSourceCodeLocation extends AbstractSourceCodeLocation {
 	properties.setProperty(SOURCE_CODE_LOCATION_NAME, getName());
 	return properties;
     }
+
+    @Override
+    public int hashCode() {
+	int result = 1;
+	return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	return true;
+    }
+
 }

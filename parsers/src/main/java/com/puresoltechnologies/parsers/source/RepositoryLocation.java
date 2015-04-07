@@ -19,47 +19,43 @@ import com.puresoltechnologies.commons.misc.io.FileSearchConfiguration;
  */
 public interface RepositoryLocation extends Serializable {
 
-    public static final String REPOSITORY_LOCATION_CLASS = "repository.class";
+	/**
+	 * This method returns the repository's name,
+	 * 
+	 * @return A {@link String} is returned containing the name of the
+	 *         repository.
+	 */
+	public String getName();
 
-    public static final String REPOSITORY_LOCATION_NAME = "repository.name";
+	/**
+	 * This method generates a human readable string where the source comes
+	 * from. For {@link File} and {@link URL}, the normal toString()
+	 * implementations might be sufficient.
+	 * 
+	 * @return A {@link String} is returned telling the original location in
+	 *         human readable way.
+	 */
+	public String getHumanReadableLocationString();
 
-    /**
-     * This method returns the repository's name,
-     * 
-     * @return A {@link String} is returned containing the name of the
-     *         repository.
-     */
-    public String getName();
+	/**
+	 * This method returns a list of {@link SourceCodeLocation} from all source
+	 * codes which are available within the specified repository.
+	 * 
+	 * @param fileSearchConfiguration
+	 *            is the {@link FileSearchConfiguration} object specifying what
+	 *            files to take into account.
+	 * @return A {@link List} of {@link SourceCodeLocation} is returned
+	 *         containing all locations.
+	 */
+	public List<SourceCodeLocation> getSourceCodes(
+			FileSearchConfiguration fileSearchConfiguration);
 
-    /**
-     * This method generates a human readable string where the source comes
-     * from. For {@link File} and {@link URL}, the normal toString()
-     * implementations might be sufficient.
-     * 
-     * @return A {@link String} is returned telling the original location in
-     *         human readable way.
-     */
-    public String getHumanReadableLocationString();
-
-    /**
-     * This method returns a list of {@link SourceCodeLocation} from all source
-     * codes which are available within the specified repository.
-     * 
-     * @param fileSearchConfiguration
-     *            is the {@link FileSearchConfiguration} object specifying what
-     *            files to take into account.
-     * @return A {@link List} of {@link SourceCodeLocation} is returned
-     *         containing all locations.
-     */
-    public List<SourceCodeLocation> getSourceCodes(
-	    FileSearchConfiguration fileSearchConfiguration);
-
-    /**
-     * This method creates a representation of the repository location as
-     * {@link Properties} object.
-     * 
-     * @return A {@link Properties} object is returned which represents this
-     *         location.
-     */
-    public Properties getSerialization();
+	/**
+	 * This method creates a representation of the repository location as
+	 * {@link Properties} object.
+	 * 
+	 * @return A {@link Properties} object is returned which represents this
+	 *         location.
+	 */
+	public Properties getSerialization();
 }

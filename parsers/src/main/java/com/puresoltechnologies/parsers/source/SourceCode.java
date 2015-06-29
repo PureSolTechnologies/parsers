@@ -34,19 +34,17 @@ public class SourceCode implements Serializable, Cloneable {
 
 	public static SourceCode read(InputStream inputStream,
 			SourceCodeLocation source) throws IOException {
-		Reader reader = new InputStreamReader(inputStream,
-				Charset.defaultCharset());
-		try {
+		try (Reader reader = new InputStreamReader(inputStream,
+				Charset.defaultCharset())) {
 			return read(reader, source);
-		} finally {
-			reader.close();
 		}
 	}
 
 	public static SourceCode read(Reader reader, SourceCodeLocation source)
 			throws IOException {
 		char[] buffer = new char[4096];
-		SourceCode code = new SourceCode();
+		SourceCode code = new SourceCode(source.getName(),
+				source.getInternalLocation());
 		int length;
 		StringBuffer stringBuffer = new StringBuffer();
 		do {
@@ -96,13 +94,29 @@ public class SourceCode implements Serializable, Cloneable {
 		return retVal;
 	}
 
+	private final String name;
+	private final String internalLocation;
 	private final List<SourceCodeLine> lines = new ArrayList<SourceCodeLine>();
 
-	public SourceCode() {
+	public SourceCode(String name, String internalLocation) {
+		this.name = name;
+		this.internalLocation = internalLocation;
 	}
 
-	public SourceCode(@JsonProperty("lines") List<SourceCodeLine> lines) {
+	public SourceCode(@JsonProperty("name") String name,
+			@JsonProperty("internalLocation") String internalLocation,
+			@JsonProperty("lines") List<SourceCodeLine> lines) {
+		this.name = name;
+		this.internalLocation = internalLocation;
 		this.lines.addAll(lines);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getInternalLocation() {
+		return internalLocation;
 	}
 
 	public List<SourceCodeLine> getLines() {

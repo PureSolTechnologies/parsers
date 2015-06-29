@@ -20,105 +20,105 @@ import com.puresoltechnologies.parsers.lexer.TokenStream;
  */
 public class FixedCodeLocation extends AbstractSourceCodeLocation {
 
-    private static final long serialVersionUID = -694681290095697777L;
+	private static final long serialVersionUID = -694681290095697777L;
 
-    private final String lines[];
+	private final String lines[];
 
-    public FixedCodeLocation(@JsonProperty("lines") String... lines) {
-	this.lines = lines;
-    }
-
-    @Override
-    public InputStream openStream() throws IOException {
-	StringBuilder builder = new StringBuilder();
-	for (SourceCodeLine line : createSourceCode().getLines()) {
-	    builder.append(line.getLine());
+	public FixedCodeLocation(@JsonProperty("lines") String... lines) {
+		this.lines = lines;
 	}
-	return new ByteArrayInputStream(builder.toString().getBytes(
-		Charset.defaultCharset()));
-    }
 
-    @Override
-    @JsonIgnore
-    public SourceCode getSourceCode() throws IOException {
-	return createSourceCode();
-    }
-
-    private SourceCode createSourceCode() {
-	SourceCode sourceCode = new SourceCode();
-	int lineNum = 0;
-	for (String line : lines) {
-	    if ((line != null) && (!line.isEmpty())) {
-		lineNum++;
-		sourceCode.addSourceCodeLine(new SourceCodeLine(this, lineNum,
-			line));
-	    }
+	@Override
+	public InputStream openStream() throws IOException {
+		StringBuilder builder = new StringBuilder();
+		for (SourceCodeLine line : createSourceCode().getLines()) {
+			builder.append(line.getLine());
+		}
+		return new ByteArrayInputStream(builder.toString().getBytes(
+				Charset.defaultCharset()));
 	}
-	return sourceCode;
-    }
 
-    @Override
-    @JsonIgnore
-    public String getHumanReadableLocationString() {
-	return "build-in";
-    }
+	@Override
+	@JsonIgnore
+	public SourceCode getSourceCode() throws IOException {
+		return createSourceCode();
+	}
 
-    public String[] getLines() {
-	return lines;
-    }
+	private SourceCode createSourceCode() {
+		SourceCode sourceCode = new SourceCode("", "");
+		int lineNum = 0;
+		for (String line : lines) {
+			if ((line != null) && (!line.isEmpty())) {
+				lineNum++;
+				sourceCode.addSourceCodeLine(new SourceCodeLine(this, lineNum,
+						line));
+			}
+		}
+		return sourceCode;
+	}
 
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((lines == null) ? 0 : lines.hashCode());
-	return result;
-    }
+	@Override
+	@JsonIgnore
+	public String getHumanReadableLocationString() {
+		return "build-in";
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-	if (this == obj)
-	    return true;
-	if (obj == null)
-	    return false;
-	if (getClass() != obj.getClass())
-	    return false;
-	FixedCodeLocation other = (FixedCodeLocation) obj;
-	if (lines == null) {
-	    if (other.lines != null)
-		return false;
-	} else if (!lines.equals(other.lines))
-	    return false;
-	return true;
-    }
+	public String[] getLines() {
+		return lines;
+	}
 
-    @Override
-    public SourceCodeLocation newRelativeSource(String relativePath) {
-	throw new IllegalStateException(
-		"Cannot provide a new relative source to a built-in source!");
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((lines == null) ? 0 : lines.hashCode());
+		return result;
+	}
 
-    @Override
-    @JsonIgnore
-    public String getName() {
-	return "built-in source";
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FixedCodeLocation other = (FixedCodeLocation) obj;
+		if (lines == null) {
+			if (other.lines != null)
+				return false;
+		} else if (!lines.equals(other.lines))
+			return false;
+		return true;
+	}
 
-    @Override
-    @JsonIgnore
-    public String getInternalLocation() {
-	return "";
-    }
+	@Override
+	public SourceCodeLocation newRelativeSource(String relativePath) {
+		throw new IllegalStateException(
+				"Cannot provide a new relative source to a built-in source!");
+	}
 
-    @Override
-    @JsonIgnore
-    public boolean isAvailable() {
-	return true;
-    }
+	@Override
+	@JsonIgnore
+	public String getName() {
+		return "built-in source";
+	}
 
-    @Override
-    @JsonIgnore
-    public Properties getSerialization() {
-	throw new IllegalStateException("A fixed code cannot be serialized!");
-    }
+	@Override
+	@JsonIgnore
+	public String getInternalLocation() {
+		return "";
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAvailable() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public Properties getSerialization() {
+		throw new IllegalStateException("A fixed code cannot be serialized!");
+	}
 }

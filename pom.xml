@@ -98,7 +98,7 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.jaxrs</groupId>
 				<artifactId>jackson-jaxrs-base</artifactId>
-				<version>2.4.1</version>
+				<version>2.5.1</version>
 				<!-- This dependency needs to be provided by the container or application -->
 				<scope>provided</scope>
 			</dependency>

@@ -2,6 +2,8 @@ package com.puresoltechnologies.parsers.grammar.production;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.puresoltechnologies.parsers.lexer.Token;
 
 /**
@@ -17,7 +19,8 @@ public final class Terminal extends AbstractConstruction {
     private final String text;
     private final int hashcode;
 
-    public Terminal(String name, String text) {
+    @JsonCreator
+    public Terminal(@JsonProperty("name") String name, @JsonProperty("text") String text) {
 	super(name, true);
 	this.text = text;
 	hashcode = Objects.hash(text);

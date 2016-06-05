@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Properties;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.puresoltechnologies.parsers.grammar.production.Construction;
 import com.puresoltechnologies.parsers.grammar.production.Production;
 import com.puresoltechnologies.parsers.grammar.production.ProductionSet;
@@ -36,18 +37,17 @@ public class Grammar implements Serializable {
     private final boolean usesPreProcessor;
     private final boolean ignoreCase;
 
-    public Grammar(Properties options, TokenDefinitionSet tokenDefinitions,
-	    ProductionSet productions) throws GrammarException {
+    public Grammar(@JsonProperty("options") Properties options,
+	    @JsonProperty("tokenDefinitions") TokenDefinitionSet tokenDefinitions,
+	    @JsonProperty("productions") ProductionSet productions) throws GrammarException {
 	super();
 	this.name = options.getProperty("grammar.name");
 	this.options = options;
 	this.tokenDefinitions = tokenDefinitions;
 	this.productions = productions;
-	this.ignoreCase = Boolean.parseBoolean(options
-		.getProperty("grammar.ignore-case"));
+	this.ignoreCase = Boolean.parseBoolean(options.getProperty("grammar.ignore-case"));
 
-	usesPreProcessor = Boolean.parseBoolean(options
-		.getProperty("preprocessor.use"));
+	usesPreProcessor = Boolean.parseBoolean(options.getProperty("preprocessor.use"));
 	if (usesPreProcessor) {
 	    this.preProcessorClassName = options.getProperty("preprocessor");
 	} else {
@@ -67,16 +67,13 @@ public class Grammar implements Serializable {
 		return;
 	    }
 	}
-	List<TokenDefinition> tokenDefinitionsList = tokenDefinitions
-		.getDefinitions();
+	List<TokenDefinition> tokenDefinitionsList = tokenDefinitions.getDefinitions();
 	if (tokenDefinitionsList.size() == 0) {
-	    throw new GrammarException(
-		    "There are not tokens specified which can be applied.");
+	    throw new GrammarException("There are not tokens specified which can be applied.");
 	}
 	List<Production> productionList = productions.getList();
 	if (productionList.size() == 0) {
-	    throw new GrammarException(
-		    "There are no productions for this grammar.");
+	    throw new GrammarException("There are no productions for this grammar.");
 	}
 	for (Production production : productionList) {
 	    for (Construction construction : production.getConstructions()) {
@@ -85,17 +82,13 @@ public class Grammar implements Serializable {
 			continue;
 		    }
 		    if (tokenDefinitions.getDefinition(construction.getName()) == null) {
-			throw new GrammarException("Token definition '"
-				+ construction.getName()
-				+ "' used in production '" + production
-				+ "'is not defined ");
+			throw new GrammarException("Token definition '" + construction.getName()
+				+ "' used in production '" + production + "'is not defined ");
 		    }
 		} else {
 		    if (productions.get(construction.getName()) == null) {
-			throw new GrammarException("Production '"
-				+ construction.getName()
-				+ "' used in production '" + production
-				+ "'is not defined ");
+			throw new GrammarException("Production '" + construction.getName() + "' used in production '"
+				+ production + "'is not defined ");
 		    }
 		}
 	    }
@@ -135,85 +128,62 @@ public class Grammar implements Serializable {
 	return ignoreCase;
     }
 
-    public Preprocessor createPreprocessor(ClassLoader classLoader)
-	    throws GrammarException {
+    public Preprocessor createPreprocessor(ClassLoader classLoader) throws GrammarException {
 	try {
 	    @SuppressWarnings("unchecked")
 	    Class<? extends Preprocessor> clazz = (Class<? extends Preprocessor>) classLoader
 		    .loadClass(preProcessorClassName);
 	    return clazz.newInstance();
 	} catch (InstantiationException e) {
-	    throw new GrammarException(
-		    "Cannot instantiate preprocessor with class'"
-			    + preProcessorClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate preprocessor with class'" + preProcessorClassName + "'!", e);
 	} catch (IllegalAccessException e) {
-	    throw new GrammarException(
-		    "Cannot instantiate preprocessor with class'"
-			    + preProcessorClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate preprocessor with class'" + preProcessorClassName + "'!", e);
 	} catch (ClassNotFoundException e) {
-	    throw new GrammarException(
-		    "Cannot instantiate preprocessor with class'"
-			    + preProcessorClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate preprocessor with class'" + preProcessorClassName + "'!", e);
 	}
     }
 
     public Lexer createLexer(ClassLoader classLoader) throws GrammarException {
 	try {
 	    @SuppressWarnings("unchecked")
-	    Class<? extends Lexer> clazz = (Class<? extends Lexer>) classLoader
-		    .loadClass(lexerClassName);
+	    Class<? extends Lexer> clazz = (Class<? extends Lexer>) classLoader.loadClass(lexerClassName);
 	    return clazz.getConstructor(Grammar.class).newInstance(this);
 	} catch (InstantiationException e) {
-	    throw new GrammarException("Cannot instantiate lexer with class'"
-		    + lexerClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate lexer with class'" + lexerClassName + "'!", e);
 	} catch (IllegalAccessException e) {
-	    throw new GrammarException("Cannot instantiate lexer with class'"
-		    + lexerClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate lexer with class'" + lexerClassName + "'!", e);
 	} catch (IllegalArgumentException e) {
-	    throw new GrammarException("Cannot instantiate lexer with class'"
-		    + lexerClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate lexer with class'" + lexerClassName + "'!", e);
 	} catch (SecurityException e) {
-	    throw new GrammarException("Cannot instantiate lexer with class'"
-		    + lexerClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate lexer with class'" + lexerClassName + "'!", e);
 	} catch (InvocationTargetException e) {
-	    throw new GrammarException("Cannot instantiate lexer with class'"
-		    + lexerClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate lexer with class'" + lexerClassName + "'!", e);
 	} catch (NoSuchMethodException e) {
-	    throw new GrammarException("Cannot instantiate lexer with class'"
-		    + lexerClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate lexer with class'" + lexerClassName + "'!", e);
 	} catch (ClassNotFoundException e) {
-	    throw new GrammarException("Cannot instantiate lexer with class'"
-		    + lexerClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate lexer with class'" + lexerClassName + "'!", e);
 	}
     }
 
     public Parser createParser(ClassLoader classLoader) throws GrammarException {
 	try {
 	    @SuppressWarnings("unchecked")
-	    Class<? extends Parser> clazz = (Class<? extends Parser>) classLoader
-		    .loadClass(parserClassName);
+	    Class<? extends Parser> clazz = (Class<? extends Parser>) classLoader.loadClass(parserClassName);
 	    return clazz.getConstructor(Grammar.class).newInstance(this);
 	} catch (InstantiationException e) {
-	    throw new GrammarException("Cannot instantiate parser with class'"
-		    + parserClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate parser with class'" + parserClassName + "'!", e);
 	} catch (IllegalAccessException e) {
-	    throw new GrammarException("Cannot instantiate parser with class'"
-		    + parserClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate parser with class'" + parserClassName + "'!", e);
 	} catch (IllegalArgumentException e) {
-	    throw new GrammarException("Cannot instantiate parser with class'"
-		    + parserClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate parser with class'" + parserClassName + "'!", e);
 	} catch (SecurityException e) {
-	    throw new GrammarException("Cannot instantiate parser with class'"
-		    + parserClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate parser with class'" + parserClassName + "'!", e);
 	} catch (InvocationTargetException e) {
-	    throw new GrammarException("Cannot instantiate parser with class'"
-		    + parserClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate parser with class'" + parserClassName + "'!", e);
 	} catch (NoSuchMethodException e) {
-	    throw new GrammarException("Cannot instantiate parser with class'"
-		    + parserClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate parser with class'" + parserClassName + "'!", e);
 	} catch (ClassNotFoundException e) {
-	    throw new GrammarException("Cannot instantiate parser with class'"
-		    + parserClassName + "'!", e);
+	    throw new GrammarException("Cannot instantiate parser with class'" + parserClassName + "'!", e);
 	}
     }
 
@@ -246,8 +216,7 @@ public class Grammar implements Serializable {
     private StringBuilder toOptionsString() {
 	StringBuilder buffer = new StringBuilder();
 	for (Object key : options.keySet()) {
-	    buffer.append(key + " : " + options.getProperty((String) key)
-		    + "\n");
+	    buffer.append(key + " : " + options.getProperty((String) key) + "\n");
 	}
 	return buffer;
     }
@@ -269,10 +238,8 @@ public class Grammar implements Serializable {
 	return buffer;
     }
 
-    public final Grammar createWithNewStartProduction(String string)
-	    throws GrammarException {
-	return new Grammar(getOptions(), getTokenDefinitions(),
-		getProductions().setNewStartProduction(string));
+    public final Grammar createWithNewStartProduction(String string) throws GrammarException {
+	return new Grammar(getOptions(), getTokenDefinitions(), getProductions().setNewStartProduction(string));
     }
 
     @Override
@@ -281,11 +248,8 @@ public class Grammar implements Serializable {
 	int result = 1;
 	result = prime * result + (ignoreCase ? 1231 : 1237);
 	result = prime * result + ((options == null) ? 0 : options.hashCode());
-	result = prime * result
-		+ ((productions == null) ? 0 : productions.hashCode());
-	result = prime
-		* result
-		+ ((tokenDefinitions == null) ? 0 : tokenDefinitions.hashCode());
+	result = prime * result + ((productions == null) ? 0 : productions.hashCode());
+	result = prime * result + ((tokenDefinitions == null) ? 0 : tokenDefinitions.hashCode());
 	return result;
     }
 

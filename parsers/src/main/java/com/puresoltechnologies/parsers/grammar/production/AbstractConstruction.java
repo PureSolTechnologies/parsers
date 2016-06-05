@@ -2,6 +2,8 @@ package com.puresoltechnologies.parsers.grammar.production;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * THIS CLASS IS NOT THREAD SAFE!!!
  * 
@@ -31,11 +33,13 @@ public abstract class AbstractConstruction implements Construction {
 	return name;
     }
 
+    @JsonIgnore
     @Override
     public final boolean isTerminal() {
 	return isTerminal;
     }
 
+    @JsonIgnore
     @Override
     public final boolean isNonTerminal() {
 	return !isTerminal;
@@ -98,7 +102,6 @@ public abstract class AbstractConstruction implements Construction {
 	if (result != 0) {
 	    return result;
 	}
-	return Boolean.valueOf(isTerminal()).compareTo(
-		Boolean.valueOf(other.isTerminal()));
+	return Boolean.valueOf(isTerminal()).compareTo(Boolean.valueOf(other.isTerminal()));
     }
 }

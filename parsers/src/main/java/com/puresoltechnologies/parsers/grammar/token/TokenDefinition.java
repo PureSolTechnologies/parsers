@@ -5,6 +5,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.puresoltechnologies.parsers.grammar.GrammarException;
 
 /**
@@ -24,61 +27,60 @@ public class TokenDefinition implements Serializable {
     private final int hashCode;
     private final boolean ignoreCase;
 
-    public TokenDefinition(String name, String regex) {
+    public TokenDefinition(String name, String text) {
 	this.name = name;
-	this.pattern = Pattern.compile("^" + regex);
+	this.pattern = Pattern.compile("^" + text);
 	this.visibility = Visibility.VISIBLE;
-	this.text = regex;
+	this.text = text;
 	this.ignoreCase = false;
 	hashCode = calculateHashCode();
     }
 
-    public TokenDefinition(String name, String regex, Visibility visibility) {
+    public TokenDefinition(String name, String text, Visibility visibility) {
 	this.name = name;
-	this.pattern = Pattern.compile("^" + regex);
+	this.pattern = Pattern.compile("^" + text);
 	this.visibility = visibility;
-	this.text = regex;
+	this.text = text;
 	this.ignoreCase = false;
 	hashCode = calculateHashCode();
     }
 
-    public TokenDefinition(String name, String regex, boolean ignoreCase) {
+    public TokenDefinition(String name, String text, boolean ignoreCase) {
 	this.name = name;
 	if (ignoreCase) {
-	    this.pattern = Pattern.compile("^" + regex,
-		    Pattern.CASE_INSENSITIVE);
+	    this.pattern = Pattern.compile("^" + text, Pattern.CASE_INSENSITIVE);
 	} else {
-	    this.pattern = Pattern.compile("^" + regex);
+	    this.pattern = Pattern.compile("^" + text);
 	}
 	this.visibility = Visibility.VISIBLE;
-	this.text = regex;
+	this.text = text;
 	this.ignoreCase = ignoreCase;
 	hashCode = calculateHashCode();
     }
 
-    public TokenDefinition(String name, String regex, Visibility visibility,
-	    boolean ignoreCase) throws GrammarException {
+    @JsonCreator
+    public TokenDefinition(@JsonProperty("name") String name, @JsonProperty("text") String text,
+	    @JsonProperty("visibility") Visibility visibility, @JsonProperty("ignoreCase") boolean ignoreCase)
+		    throws GrammarException {
 	try {
 	    this.name = name;
 	    if (ignoreCase) {
-		this.pattern = Pattern.compile("^" + regex,
-			Pattern.CASE_INSENSITIVE);
+		this.pattern = Pattern.compile("^" + text, Pattern.CASE_INSENSITIVE);
 	    } else {
-		this.pattern = Pattern.compile("^" + regex);
+		this.pattern = Pattern.compile("^" + text);
 	    }
 	    this.visibility = visibility;
-	    this.text = regex;
+	    this.text = text;
 	    this.ignoreCase = ignoreCase;
 	    hashCode = calculateHashCode();
 	} catch (PatternSyntaxException e) {
-	    throw new GrammarException("Grammar failure in '" + name
-		    + "'!\nPattern: '" + regex + "'\nRegExp-Message: "
-		    + e.getMessage());
+	    throw new GrammarException(
+		    "Grammar failure in '" + name + "'!\nPattern: '" + text + "'\nRegExp-Message: " + e.getMessage());
 	}
     }
 
     private int calculateHashCode() {
-	return Objects.hash(name, pattern, text, visibility);
+	return Objects.hash(name, pattern.pattern(), text, visibility);
     }
 
     /**
@@ -91,6 +93,7 @@ public class TokenDefinition implements Serializable {
     /**
      * @return the patterns
      */
+    @JsonIgnore
     public Pattern getPattern() {
 	return pattern;
     }
@@ -147,7 +150,7 @@ public class TokenDefinition implements Serializable {
 	if (pattern == null) {
 	    if (other.pattern != null)
 		return false;
-	} else if (!pattern.equals(other.pattern))
+	} else if (!pattern.pattern().equals(other.pattern.pattern()))
 	    return false;
 	if (text == null) {
 	    if (other.text != null)

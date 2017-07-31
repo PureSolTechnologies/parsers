@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.puresoltechnologies.parsers.grammar.Grammar;
@@ -62,17 +63,16 @@ public class Follow implements Serializable {
 
     /**
      * This method ass the finish construction to the start symbol. If a start
-     * symbol is defined by StartProduction this construction is used. If the
-     * there is no such production, the fist production is used.
+     * symbol is defined by StartProduction this construction is used. If the there
+     * is no such production, the fist production is used.
      * 
      * This is rule 1 from Dragon book:
      * 
-     * 1) Platzieren Sie $ in FOLLOW(S), wobei S das Startsymbol und $ die
-     * rechte Endmarkierung fuer die Eingabe sind.
+     * 1) Platzieren Sie $ in FOLLOW(S), wobei S das Startsymbol und $ die rechte
+     * Endmarkierung fuer die Eingabe sind.
      */
     private void addFinishToStart() {
-	follow.get(grammar.getProductions().get(0).getName()).add(
-		FinishTerminal.getInstance());
+	follow.get(grammar.getProductions().get(0).getName()).add(FinishTerminal.getInstance());
     }
 
     private void iterate() {
@@ -110,8 +110,7 @@ public class Follow implements Serializable {
 	    }
 	    int startSize = followSet.size();
 	    /*
-	     * For the found non-terminal find the following constructions by
-	     * first sets.
+	     * For the found non-terminal find the following constructions by first sets.
 	     */
 	    if (i < constructions.size() - 1) {
 		for (int j = i + 1; j < constructions.size(); j++) {
@@ -156,12 +155,13 @@ public class Follow implements Serializable {
     @Override
     public String toString() {
 	StringBuffer buffer = new StringBuffer();
-	for (String productionName : follow.keySet()) {
+	for (Entry<String, Set<Terminal>> productionEntry : follow.entrySet()) {
+	    String productionName = productionEntry.getKey();
 	    buffer.append(productionName);
 	    buffer.append("\t");
 	    buffer.append("{");
 	    boolean firstRun = true;
-	    for (Construction construction : follow.get(productionName)) {
+	    for (Construction construction : productionEntry.getValue()) {
 		if (firstRun) {
 		    firstRun = false;
 		} else {

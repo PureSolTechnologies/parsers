@@ -3,6 +3,7 @@ package com.puresoltechnologies.parsers.grammar;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -16,12 +17,12 @@ import com.puresoltechnologies.parsers.lexer.LexerFactory;
 import com.puresoltechnologies.parsers.lexer.LexerFactoryException;
 import com.puresoltechnologies.parsers.lexer.RegExpLexer;
 import com.puresoltechnologies.parsers.lexer.TokenStream;
+import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.parser.Parser;
 import com.puresoltechnologies.parsers.parser.ParserException;
 import com.puresoltechnologies.parsers.parser.ParserFactory;
 import com.puresoltechnologies.parsers.parser.ParserFactoryException;
 import com.puresoltechnologies.parsers.parser.ParserManager;
-import com.puresoltechnologies.parsers.parser.ParseTreeNode;
 import com.puresoltechnologies.parsers.source.SourceCode;
 import com.puresoltechnologies.trees.TreePrinter;
 
@@ -36,86 +37,60 @@ import com.puresoltechnologies.trees.TreePrinter;
  */
 public class GrammarPartTester {
 
-    private static final Logger logger = LoggerFactory
-	    .getLogger(GrammarPartTester.class);
+    private static final Logger logger = LoggerFactory.getLogger(GrammarPartTester.class);
 
-    public static boolean test(Grammar grammar, String production,
-	    String... lines) {
+    public static boolean test(Grammar grammar, String production, String... lines) {
 	try {
 	    if (logger.isDebugEnabled()) {
-		logger.debug("Testing production '" + production
-			+ "' with text '" + Arrays.toString(lines) + "' ...");
+		logger.debug("Testing production '" + production + "' with text '" + Arrays.toString(lines) + "' ...");
 	    }
 	    grammar = grammar.createWithNewStartProduction(production);
 	    Lexer lexer = LexerFactory.create(grammar);
-	    TokenStream tokenStream = lexer.lex(SourceCode
-		    .fromStringArray(lines));
+	    TokenStream tokenStream = lexer.lex(SourceCode.fromStringArray(lines));
 
 	    Parser parser = ParserFactory.create(grammar);
 	    ParseTreeNode ast = parser.parse(tokenStream);
 	    if (logger.isTraceEnabled()) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		new TreePrinter(new PrintStream(out)).println(ast);
-		logger.trace(new String(out.toByteArray(), Charset
-			.defaultCharset()));
+		new TreePrinter(new PrintStream(out, true, Charset.defaultCharset().name())).println(ast);
+		logger.trace(new String(out.toByteArray(), Charset.defaultCharset()));
 	    }
 	    logger.debug("passed.");
 	    return true;
-	} catch (GrammarException e) {
-	    e.printStackTrace();
-	    return false;
-	} catch (LexerException e) {
-	    e.printStackTrace();
-	    return false;
-	} catch (ParserFactoryException e) {
-	    e.printStackTrace();
-	    return false;
-	} catch (ParserException e) {
-	    e.printStackTrace();
-	    return false;
-	} catch (LexerFactoryException e) {
+	} catch (GrammarException | LexerException | ParserFactoryException | ParserException | LexerFactoryException
+		| UnsupportedEncodingException e) {
 	    e.printStackTrace();
 	    return false;
 	}
     }
 
-    public static boolean test(File parserDirectory, String parserName,
-	    Grammar grammar, String production, String... lines) {
+    public static boolean test(File parserDirectory, String parserName, Grammar grammar, String production,
+	    String... lines) {
 	try {
 	    if (logger.isDebugEnabled()) {
-		logger.debug("Testing text '" + production + "' with text '"
-			+ Arrays.toString(lines) + "' ...");
+		logger.debug("Testing text '" + production + "' with text '" + Arrays.toString(lines) + "' ...");
 	    }
 	    grammar = grammar.createWithNewStartProduction(production);
 	    StopWatch watch = new StopWatch();
 	    Lexer lexer = new RegExpLexer(grammar);
 	    watch.start();
-	    TokenStream tokenStream = lexer.lex(SourceCode
-		    .fromStringArray(lines));
+	    TokenStream tokenStream = lexer.lex(SourceCode.fromStringArray(lines));
 	    watch.stop();
 	    logger.debug("Lexer time: " + watch);
 
-	    Parser parser = ParserManager.getManagerParser(parserDirectory,
-		    parserName, grammar);
+	    Parser parser = ParserManager.getManagerParser(parserDirectory, parserName, grammar);
 	    watch.start();
 	    ParseTreeNode ast = parser.parse(tokenStream);
 	    watch.stop();
 	    logger.debug("Parser time: " + watch);
 	    if (logger.isTraceEnabled()) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		new TreePrinter(new PrintStream(out)).println(ast);
-		logger.trace(new String(out.toByteArray(), Charset
-			.defaultCharset()));
+		new TreePrinter(new PrintStream(out, true, Charset.defaultCharset().name())).println(ast);
+		logger.trace(new String(out.toByteArray(), Charset.defaultCharset()));
 	    }
 	    logger.debug("passed.");
 	    return true;
-	} catch (GrammarException e) {
-	    e.printStackTrace();
-	    return false;
-	} catch (ParserException e) {
-	    e.printStackTrace();
-	    return false;
-	} catch (LexerException e) {
+	} catch (GrammarException | ParserException | LexerException | UnsupportedEncodingException e) {
 	    e.printStackTrace();
 	    return false;
 	}

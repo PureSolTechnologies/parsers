@@ -13,8 +13,7 @@ public class LR0StateTransitions extends StateTransitions {
     private final LR0ItemSetCollection itemSetCollection;
     private final Goto0 goto0;
 
-    public LR0StateTransitions(LR0ItemSetCollection itemSetCollection,
-	    Goto0 goto0) throws GrammarException {
+    public LR0StateTransitions(LR0ItemSetCollection itemSetCollection, Goto0 goto0) throws GrammarException {
 	super();
 	this.itemSetCollection = itemSetCollection;
 	this.goto0 = goto0;
@@ -30,6 +29,37 @@ public class LR0StateTransitions extends StateTransitions {
 		addTransition(stateId, next, targetState);
 	    }
 	}
+    }
+
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = super.hashCode();
+	result = prime * result + ((goto0 == null) ? 0 : goto0.hashCode());
+	result = prime * result + ((itemSetCollection == null) ? 0 : itemSetCollection.hashCode());
+	return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (!super.equals(obj))
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	LR0StateTransitions other = (LR0StateTransitions) obj;
+	if (goto0 == null) {
+	    if (other.goto0 != null)
+		return false;
+	} else if (!goto0.equals(other.goto0))
+	    return false;
+	if (itemSetCollection == null) {
+	    if (other.itemSetCollection != null)
+		return false;
+	} else if (!itemSetCollection.equals(other.itemSetCollection))
+	    return false;
+	return true;
     }
 
 }

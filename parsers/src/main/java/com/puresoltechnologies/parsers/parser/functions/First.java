@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.puresoltechnologies.parsers.grammar.Grammar;
@@ -46,8 +47,8 @@ public class First implements Serializable {
     private final Grammar grammar;
 
     /**
-     * This field contains the first sets for all productions contained within
-     * the grammar.
+     * This field contains the first sets for all productions contained within the
+     * grammar.
      */
     private final Map<String, Set<Terminal>> firstGrammar = new HashMap<String, Set<Terminal>>();
     /**
@@ -73,8 +74,7 @@ public class First implements Serializable {
     private void initFirstMapForGrammarProductions() {
 	for (Production production : grammar.getProductions().getList()) {
 	    if (!firstGrammar.containsKey(production.getName())) {
-		firstGrammar.put(production.getName(),
-			new LinkedHashSet<Terminal>());
+		firstGrammar.put(production.getName(), new LinkedHashSet<Terminal>());
 	    }
 	}
     }
@@ -111,8 +111,7 @@ public class First implements Serializable {
 		    // terminal is found and there is nothing to proceed...
 		    break;
 		}
-		Set<Terminal> terminals = firstGrammar.get(construction
-			.getName());
+		Set<Terminal> terminals = firstGrammar.get(construction.getName());
 		if (terminals == null) {
 		    continue;
 		}
@@ -183,12 +182,13 @@ public class First implements Serializable {
     @Override
     public String toString() {
 	StringBuffer buffer = new StringBuffer();
-	for (String productionName : firstGrammar.keySet()) {
+	for (Entry<String, Set<Terminal>> productionEntry : firstGrammar.entrySet()) {
+	    String productionName = productionEntry.getKey();
 	    buffer.append(productionName);
 	    buffer.append("\t");
 	    buffer.append("{");
 	    boolean firstRun = true;
-	    for (Construction construction : firstGrammar.get(productionName)) {
+	    for (Construction construction : productionEntry.getValue()) {
 		if (firstRun) {
 		    firstRun = false;
 		} else {

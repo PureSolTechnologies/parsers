@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.puresoltechnologies.parsers.utils.ReflectionUtils;
 
 /**
  * This class represents a single line of source code taken from a source code
@@ -22,8 +23,7 @@ public class SourceCodeLine implements Serializable, Cloneable {
     private final String line;
     private final int hashCode;
 
-    public SourceCodeLine(@JsonProperty("source") SourceCodeLocation source,
-	    @JsonProperty("lineNumber") int lineNumber,
+    public SourceCodeLine(@JsonProperty("source") SourceCodeLocation source, @JsonProperty("lineNumber") int lineNumber,
 	    @JsonProperty("line") String line) {
 	super();
 	this.source = source;
@@ -83,6 +83,15 @@ public class SourceCodeLine implements Serializable, Cloneable {
 
     @Override
     public SourceCodeLine clone() {
-	return new SourceCodeLine(source, lineNumber, line);
+	try {
+	    SourceCodeLine cloned = (SourceCodeLine) super.clone();
+	    ReflectionUtils.setField(cloned, "source", source);
+	    ReflectionUtils.setField(cloned, "lineNumber", lineNumber);
+	    ReflectionUtils.setField(cloned, "line", line);
+	    return cloned;
+	} catch (CloneNotSupportedException | NoSuchFieldException | SecurityException | IllegalArgumentException
+		| IllegalAccessException e) {
+	    throw new RuntimeException(e);
+	}
     }
 }

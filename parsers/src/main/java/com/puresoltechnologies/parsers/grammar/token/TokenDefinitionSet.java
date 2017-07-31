@@ -62,6 +62,9 @@ public class TokenDefinitionSet implements Serializable {
 		rebuildIndex();
 		id = name2DefinitionID.get(name);
 	    }
+	    if (id == null) {
+		throw new IllegalStateException("Definition id was not found. This should not happen...");
+	    }
 	}
 	return id;
     }

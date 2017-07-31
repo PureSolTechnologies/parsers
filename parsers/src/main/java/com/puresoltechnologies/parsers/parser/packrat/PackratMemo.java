@@ -1,5 +1,6 @@
 package com.puresoltechnologies.parsers.parser.packrat;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,11 +10,13 @@ import java.util.Map;
  * @author Rick-Rainer Ludwig
  * 
  */
-public class PackratMemo {
+public class PackratMemo implements Serializable {
+
+    private static final long serialVersionUID = 5474336547381707264L;
 
     /**
-     * This is the memoization buffer to put all memoized data in. The buffer
-     * stores a MemoEntry for each production on a given position.
+     * This is the memoization buffer to put all memoized data in. The buffer stores
+     * a MemoEntry for each production on a given position.
      */
     private final Map<Integer, Map<String, MemoEntry>> memo = new HashMap<Integer, Map<String, MemoEntry>>();
 
@@ -26,8 +29,8 @@ public class PackratMemo {
 
     /**
      * This method returns the current memoization element from the buffer. This
-     * element is unprocessed. If the element is not set (null) a NONE element
-     * is put into the buffer and returned.
+     * element is unprocessed. If the element is not set (null) a NONE element is
+     * put into the buffer and returned.
      * 
      * @param production
      * @param position
@@ -45,15 +48,14 @@ public class PackratMemo {
 
     /**
      * This method puts memozation elements into the buffer. It is designed in a
-     * way, that entries, once set, are not changed anymore. This is needed not
-     * to break references!
+     * way, that entries, once set, are not changed anymore. This is needed not to
+     * break references!
      * 
      * @param production
      * @param position
      * @param stackElement
      */
-    void setMemo(String production, int position, int line,
-	    final MemoEntry stackElement) {
+    void setMemo(String production, int position, int line, final MemoEntry stackElement) {
 	Map<String, MemoEntry> map = memo.get(position);
 	if (map == null) {
 	    map = new HashMap<String, MemoEntry>();
@@ -61,8 +63,7 @@ public class PackratMemo {
 	    map.put(production, stackElement);
 	} else {
 	    if (map.containsKey(production)) {
-		throw new RuntimeException(
-			"We should not set a memo twice. Modifying is needed afterwards.");
+		throw new RuntimeException("We should not set a memo twice. Modifying is needed afterwards.");
 	    }
 	    map.put(production, stackElement);
 	}

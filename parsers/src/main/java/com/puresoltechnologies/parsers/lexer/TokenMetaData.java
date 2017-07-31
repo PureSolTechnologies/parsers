@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.puresoltechnologies.parsers.source.SourceCodeLocation;
+import com.puresoltechnologies.parsers.utils.ReflectionUtils;
 
 /**
  * This class is used to store additional data for the tokens found like the
@@ -23,9 +24,8 @@ public class TokenMetaData implements Serializable, Cloneable {
     private static final long serialVersionUID = 6478412339837934971L;
 
     /**
-     * This is the location of the token. This needs to point to a file or
-     * document, where the token is in. See {@link SourceCodeLocation} for more
-     * information.
+     * This is the location of the token. This needs to point to a file or document,
+     * where the token is in. See {@link SourceCodeLocation} for more information.
      */
     private final SourceCodeLocation source;
     /**
@@ -35,8 +35,8 @@ public class TokenMetaData implements Serializable, Cloneable {
      */
     private final int line;
     /**
-     * This contains the number of lines which the token overspans. This is
-     * normally the number of line terminators plus 1.
+     * This contains the number of lines which the token overspans. This is normally
+     * the number of line terminators plus 1.
      */
     private final int lineNum;
 
@@ -45,13 +45,12 @@ public class TokenMetaData implements Serializable, Cloneable {
      */
     private final int column;
     /**
-     * This is a constant hash code for {@link #hashCode()}. It is calculated in
-     * the constructor for fast access.
+     * This is a constant hash code for {@link #hashCode()}. It is calculated in the
+     * constructor for fast access.
      */
     private final int hashcode;
 
-    public TokenMetaData(SourceCodeLocation source, int line, int lineNum,
-	    int column) {
+    public TokenMetaData(SourceCodeLocation source, int line, int lineNum, int column) {
 	super();
 	this.source = source;
 	this.line = line;
@@ -72,9 +71,9 @@ public class TokenMetaData implements Serializable, Cloneable {
     }
 
     /**
-     * Returns the number of lines which are covered by a token. Generally,
-     * tokens will return 1 here, but tokens like line break will return 2 and
-     * multi line comments will return larger numbers.
+     * Returns the number of lines which are covered by a token. Generally, tokens
+     * will return 1 here, but tokens like line break will return 2 and multi line
+     * comments will return larger numbers.
      * 
      * @return the lineNum
      */
@@ -83,8 +82,8 @@ public class TokenMetaData implements Serializable, Cloneable {
     }
 
     /**
-     * This method returns the column of the token. This is the character
-     * position within the line where the token starts.
+     * This method returns the column of the token. This is the character position
+     * within the line where the token starts.
      * 
      * @return An integer is returned.
      */
@@ -98,8 +97,7 @@ public class TokenMetaData implements Serializable, Cloneable {
 	if (lineNum == 1) {
 	    result += "line: " + line + "; column: " + column;
 	} else {
-	    result += "lines: " + line + " - " + (line + lineNum - 1)
-		    + "; column: " + column;
+	    result += "lines: " + line + " - " + (line + lineNum - 1) + "; column: " + column;
 	}
 	return result;
     }
@@ -136,6 +134,16 @@ public class TokenMetaData implements Serializable, Cloneable {
 
     @Override
     public TokenMetaData clone() {
-	return new TokenMetaData(source, line, lineNum, column);
+	try {
+	    TokenMetaData cloned = (TokenMetaData) super.clone();
+	    ReflectionUtils.setField(cloned, "source", source);
+	    ReflectionUtils.setField(cloned, "line", line);
+	    ReflectionUtils.setField(cloned, "lineNum", lineNum);
+	    ReflectionUtils.setField(cloned, "column", column);
+	    return cloned;
+	} catch (CloneNotSupportedException | NoSuchFieldException | SecurityException | IllegalArgumentException
+		| IllegalAccessException e) {
+	    throw new RuntimeException(e);
+	}
     }
 }

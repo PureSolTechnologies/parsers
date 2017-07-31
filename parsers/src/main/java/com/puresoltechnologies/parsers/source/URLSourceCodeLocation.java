@@ -26,8 +26,7 @@ public class URLSourceCodeLocation extends AbstractSourceCodeLocation {
 	try {
 	    this.url = new URL(properties.getProperty(SOURCE_CODE_LOCATION_URL));
 	} catch (MalformedURLException e) {
-	    throw new IllegalStateException(
-		    "Could not de-serialize source code location.", e);
+	    throw new IllegalStateException("Could not de-serialize source code location.", e);
 	}
     }
 
@@ -54,7 +53,7 @@ public class URLSourceCodeLocation extends AbstractSourceCodeLocation {
     public int hashCode() {
 	final int prime = 31;
 	int result = 1;
-	result = prime * result + ((url == null) ? 0 : url.hashCode());
+	result = prime * result + ((url == null) ? 0 : url.toExternalForm().hashCode());
 	return result;
     }
 
@@ -70,15 +69,14 @@ public class URLSourceCodeLocation extends AbstractSourceCodeLocation {
 	if (url == null) {
 	    if (other.url != null)
 		return false;
-	} else if (!url.equals(other.url))
+	} else if (!url.toExternalForm().equals(other.url.toExternalForm()))
 	    return false;
 	return true;
     }
 
     @Override
     public SourceCodeLocation newRelativeSource(String relativePath) {
-	throw new IllegalStateException(
-		"This functionality is not implemented, yet!");
+	throw new IllegalStateException("This functionality is not implemented, yet!");
     }
 
     public URL getUrl() {
@@ -111,8 +109,7 @@ public class URLSourceCodeLocation extends AbstractSourceCodeLocation {
     @JsonIgnore
     public Properties getSerialization() {
 	Properties properties = new Properties();
-	properties
-		.setProperty(SOURCE_CODE_LOCATION_CLASS, getClass().getName());
+	properties.setProperty(SOURCE_CODE_LOCATION_CLASS, getClass().getName());
 	properties.setProperty(SOURCE_CODE_LOCATION_NAME, getName());
 	properties.setProperty(SOURCE_CODE_LOCATION_URL, url.toExternalForm());
 	return properties;

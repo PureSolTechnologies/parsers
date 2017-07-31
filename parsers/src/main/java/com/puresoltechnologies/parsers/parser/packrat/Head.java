@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.puresoltechnologies.parsers.utils.ReflectionUtils;
+
 /**
  * This class represents a head for packrat parser to support indirect left
  * recursion.
@@ -20,12 +22,12 @@ public class Head implements Serializable, Cloneable {
      */
     private final String production;
     /**
-	 * 
-	 */
+     * 
+     */
     private final Set<String> involvedSet = new LinkedHashSet<String>();
     /**
-	 * 
-	 */
+     * 
+     */
     private final Set<String> evalSet = new LinkedHashSet<String>();
 
     /**
@@ -75,10 +77,8 @@ public class Head implements Serializable, Cloneable {
 	final int prime = 31;
 	int result = 1;
 	result = prime * result + ((evalSet == null) ? 0 : evalSet.hashCode());
-	result = prime * result
-		+ ((involvedSet == null) ? 0 : involvedSet.hashCode());
-	result = prime * result
-		+ ((production == null) ? 0 : production.hashCode());
+	result = prime * result + ((involvedSet == null) ? 0 : involvedSet.hashCode());
+	result = prime * result + ((production == null) ? 0 : production.hashCode());
 	return result;
     }
 
@@ -111,10 +111,16 @@ public class Head implements Serializable, Cloneable {
 
     @Override
     public Head clone() {
-	Head cloned = new Head(getProduction());
-	cloned.evalSet.addAll(this.evalSet);
-	cloned.involvedSet.addAll(this.involvedSet);
-	return cloned;
+	try {
+	    Head cloned = (Head) super.clone();
+	    ReflectionUtils.setField(cloned, "production", getProduction());
+	    cloned.evalSet.addAll(this.evalSet);
+	    cloned.involvedSet.addAll(this.involvedSet);
+	    return cloned;
+	} catch (CloneNotSupportedException | NoSuchFieldException | SecurityException | IllegalArgumentException
+		| IllegalAccessException e) {
+	    throw new RuntimeException(e);
+	}
     }
 
     @Override

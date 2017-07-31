@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.puresoltechnologies.parsers.source.SourceCodeLocation;
+import com.puresoltechnologies.parsers.utils.ReflectionUtils;
 
 /**
  * This class is used to store meta information for each node in an AST.
@@ -78,6 +79,15 @@ public class ParserTreeMetaData implements Serializable, Cloneable {
 
     @Override
     public ParserTreeMetaData clone() {
-	return new ParserTreeMetaData(source, line, lineNum);
+	try {
+	    ParserTreeMetaData cloned = (ParserTreeMetaData) super.clone();
+	    ReflectionUtils.setField(cloned, "source", source);
+	    ReflectionUtils.setField(cloned, "line", line);
+	    ReflectionUtils.setField(cloned, "lineNum", lineNum);
+	    return cloned;
+	} catch (CloneNotSupportedException | NoSuchFieldException | SecurityException | IllegalArgumentException
+		| IllegalAccessException e) {
+	    throw new RuntimeException(e);
+	}
     }
 }
